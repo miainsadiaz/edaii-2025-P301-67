@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include "struct.h"
 
 void createaleak() {
   char *foo = malloc(20 * sizeof(char));
