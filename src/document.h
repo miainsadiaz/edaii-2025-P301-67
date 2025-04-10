@@ -13,3 +13,4 @@ typedef struct{
 typedef struct DocumentsList {
     Document* head;
 } DocumentsList;
+
