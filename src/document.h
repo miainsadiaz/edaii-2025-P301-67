@@ -9,6 +9,7 @@ typedef struct{
     Document* next;
 }Document;
 
+
 typedef struct DocumentsList {
     Document* head;
 } DocumentsList;
