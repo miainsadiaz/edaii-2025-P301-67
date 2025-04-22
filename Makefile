@@ -2,12 +2,12 @@ SRC_FILES := $(filter-out src/main.c, $(wildcard src/*.c))
 
 compile:
 	gcc -Wall -Wextra -Werror src/main.c $(SRC_FILES) -o main.out
-	
+
 r:
 	make compile
 	./main.out
 
-v: 
+v:
 	make compile
 	valgrind --leak-check=yes ./main.out
 
@@ -17,7 +17,6 @@ compiledebug:
 d:
 	make compiledebug
 	gdb ./main.out
-
 
 compiletest:
 	gcc -Wall -Wextra -Werror test/test.c test/utils.c $(SRC_FILES) -o test.out
@@ -34,8 +33,7 @@ dt:
 	gdb ./test.out
 
 c:
-	rm main.out || true 
-	rm test.out || true
+	rm -f main.out test.out
 
 f:
 	clang-format -i **/*.c **/*.h
