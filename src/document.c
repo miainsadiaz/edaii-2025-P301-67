@@ -19,15 +19,14 @@ Obre el directori i, per cada fitxer, crida les dues funcions de dalt
 
 
 Document* create_document_from_file(const char* nom_document, int id) {
-FILE* file= fopen(nom_document, "r");
-if(file==NULL){
-    printf("error obrint fitxer");
-    return NULL;
-}
+    FILE* file= fopen(nom_document, "r");
+    if(file==NULL){
+        printf("error obrint fitxer");
+        return NULL;
+    }
 
-Document document;
-document.title= 
-
+    Document document;
+    document.title= "hola";
 }
 
 

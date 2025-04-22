@@ -1,9 +1,7 @@
 typedef struct{
     int id;
     Link* next;
+    Link* prev;
 }Link;
 
-typedef struct{
-    Link *head;
-} LinkList;
 
