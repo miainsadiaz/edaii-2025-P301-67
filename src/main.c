@@ -17,8 +17,9 @@ int main() {
 
   // how to import and call a function
   printf("Factorial of 4 is %d\n", fact(4));
+
   
-  Document* doc = document_desserialize("/Users/annavilacis/Documents/UNI/2n CURS/3r Trimestre/EDA II/LABS/edaii-2025-P301-67/datasets/wikipedia12/2.txt");
+  Document* doc = document_desserialize("./datasets/wikipedia12/2.txt");
   if (doc == NULL) {
         printf("Error: No se pudo deserializar el documento.\n");
         return 1;
