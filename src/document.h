@@ -13,7 +13,9 @@ typedef struct Document {
     struct Document *next; 
 } Document;
 
-
+typedef struct {
+    Document *head;     /* primer element; NULL si la llista és buida */
+} DocumentsList;
 
 Document *document_desserialize(char *path);
 Link *LinksInit();
@@ -27,8 +29,6 @@ void alliberar_links(Link *head);
 void eliminar_primer_link(Link** head);
 void eliminar_link_pos(Link** head, int pos);
 
-typedef struct {
-    Document *head;     /* primer element; NULL si la llista és buida */
-} DocumentsList;
+
 
 #endif /* DOCUMENT_H */
