@@ -10,12 +10,16 @@ typedef struct Document{
     Link* links;
     float relevance;
     char* body;
-    struct Document* next;
 }Document;
 
+typedef struct DocumentNode {
+    Document *doc;
+    struct DocumentNode *next;
+} DocumentNode;
 
 
 
+DocumentNode *document_desserialize_dir(const char* path);
 Document *document_desserialize(char *path);
 Link *LinksInit();
 Link *crear_link(int id);
@@ -24,15 +28,10 @@ void afegir_link(Link **head, int id);
 void afegir_link_al_principi(Link **head, int id);
 void afegir_link_pos(Link *prev_link, int id);
 void eliminar_ultim_link(Link** head);
-void alliberar_links(Link *head);
+void free_links(Link *head);
 void eliminar_primer_link(Link** head);
-<<<<<<< HEAD
 void eliminar_link_pos(Link** head, int pos);
 void print_document(Document *doc);
+void free_document(Document* doc);
+void free_documents_list(DocumentNode *docs);
 
-
-
-#endif /* DOCUMENT_H */    
-=======
-void eliminar_link_pos(Link** head, int pos);
->>>>>>> c8bff65d00de1fb22abbe31610b472e9597a3b13
