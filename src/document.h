@@ -1,21 +1,20 @@
-#ifndef DOCUMENT_H
-#define DOCUMENT_H
+typedef struct Link{
+    int id;
+    struct Link* next;
+    struct Link* prev;
+}Link;
 
-#include "link.h"   /* perquè fem servir Link* dins Document */
+typedef struct Document{
+    char* title;
+    int id;
+    Link* links;
+    float relevance;
+    char* body;
+    struct Document* next;
+}Document;
 
 
-typedef struct Document {
-    char   *title;      
-    int     id;         
-    Link   *links;      
-    float   relevance; 
-    char   *body;       
-    struct Document *next; 
-} Document;
 
-typedef struct {
-    Document *head;     /* primer element; NULL si la llista és buida */
-} DocumentsList;
 
 Document *document_desserialize(char *path);
 Link *LinksInit();
@@ -28,7 +27,3 @@ void eliminar_ultim_link(Link** head);
 void alliberar_links(Link *head);
 void eliminar_primer_link(Link** head);
 void eliminar_link_pos(Link** head, int pos);
-
-
-
-#endif /* DOCUMENT_H */
