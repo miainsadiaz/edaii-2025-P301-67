@@ -32,4 +32,4 @@ void print_document(Document *doc);
 
 
 
-#endif /* DOCUMENT_H */
+#endif /* DOCUMENT_H */    

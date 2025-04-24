@@ -30,26 +30,8 @@ int main() {
 
     return 0;
 
-
-
-
-    Document *doc =document_desserialize("./datasets/wikipedia12/2.txt");
-    if(doc!=NULL){
-      print_document(doc);
-      //lliberar meoria després d'imprimir 
-      free(doc->title);
-      free(doc->body);
-      free_links(doc->links);
-      free(doc);
-
-
-    }else{
-      printf("No s'ha pogut carregar\n");
-  }
-    return 0;
-
   // how to import and call a function
-  printf("Factorial of 4 is %d\n", fact(4));
+  //printf("Factorial of 4 is %d\n", fact(4));
 
   // uncomment and run "make v" to see how valgrind detects memory leaks
   createaleak();

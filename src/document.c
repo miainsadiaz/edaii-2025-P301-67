@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "document.h"
+#include "link.h"
 
 
 //crear node llista
@@ -237,7 +238,7 @@ void print_document(Document *doc){
         printf("Body: %s\n",doc->body);
         // imprimir los links
         Link *current =doc->links;
-        print("Links: ");
+        printf("Links: ");
         while (current !=NULL){
             printf("%d",current->id);
             current=current->next;
