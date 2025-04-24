@@ -4,12 +4,8 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "document.h"
-<<<<<<< HEAD
-#include "link.h"
-=======
 
 
->>>>>>> c8bff65d00de1fb22abbe31610b472e9597a3b13
 
 void createaleak() {
   char *foo = malloc(20 * sizeof(char));
@@ -17,39 +13,14 @@ void createaleak() {
 }
 
 int main() {
-<<<<<<< HEAD
-    printf("*****************\nWelcome to EDA 2!\n*****************\n");
-  
-  Document *doc = document_desserialize("./datasets/wikipedia12/2.txt");
-  if (doc != NULL) {
-        print_document(doc);
-
-        // Liberar memoria después de imprimir
-        free(doc->title);
-        free(doc->body);
-        free_links(doc->links);
-        free(doc);
-    }else{
-      printf("No s'ha pogut carregar\n");
-  }
-
-    return 0;
-
-  // how to import and call a function
-  //printf("Factorial of 4 is %d\n", fact(4));
-
-  // uncomment and run "make v" to see how valgrind detects memory leaks
-  createaleak();
-
-    return 0;
-=======
   printf("*****************\nWelcome to EDA 2!\n*****************\n");
 
   // how to import and call a function
   printf("Factorial of 4 is %d\n", fact(4));
 
-  
-  Document* doc = document_desserialize("./datasets/wikipedia12/8.txt");
+  //Imprimir un document
+  /*
+  Document* doc = document_desserialize("./datasets/wikipedia12/0.txt");
 
   printf("Document ID: %d\n", doc->id);
   printf("Document Title: %s\n", doc->title);
@@ -61,12 +32,32 @@ int main() {
   alliberar_links(doc->links); 
   free(doc->title);
   free(doc->body);
-  free(doc);
+  free(doc);*/
+
+  
+  const char* path = "./datasets/wikipedia12";
+  DocumentNode* docs = document_desserialize_dir(path);
+
+  DocumentNode* current_doc = docs;
+  while (current_doc != NULL) {
+      print_document(current_doc->doc);
+      printf("Document Links:\n");
+      Link* current_link = current_doc->doc->links;
+      print_link_list(current_link);
+      current_doc = current_doc->next;
+  }
+  
+    while (current_doc != NULL) {
+        DocumentNode *temp = current_doc;
+        free_links(current_doc->doc->links);
+        current_doc = current_doc->next;
+        free(temp);
+    }
+
 
 
   // uncomment and run "make v" to see how valgrind detects memory leaks
   // createaleak();
 
   return 0;
->>>>>>> c8bff65d00de1fb22abbe31610b472e9597a3b13
 }
