@@ -19,6 +19,7 @@ int main() {
   printf("Factorial of 4 is %d\n", fact(4));
 
   //Imprimir un document
+  
   /*
   Document* doc = document_desserialize("./datasets/wikipedia12/0.txt");
 
@@ -29,7 +30,7 @@ int main() {
   Link* current_link = doc->links;
   print_link_list(current_link);
 
-  alliberar_links(doc->links); 
+  free_links(doc->links); 
   free(doc->title);
   free(doc->body);
   free(doc);*/

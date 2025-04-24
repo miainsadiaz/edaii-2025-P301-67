@@ -179,18 +179,18 @@ Document *document_desserialize(char *path) {
     document->id = atoi(buffer);
 
     // parse title
-    // TODO
-    bufferIdx = 0;                          //reiniciem l'índex del buffer per començar des de 0
-    while ((ch = fgetc(f)) != '\n') {       //llegim caràcter per caràcter fins trobar un salt de línia
-        assert(bufferIdx < bufferSize);     //no ens passem del tamany del buffer
-        buffer[bufferIdx++] = ch;           //guardem char al buffer i avancem l'índex
+    bufferIdx = 0;
+    while ((ch = fgetc(f)) != '\n') {
+        assert(bufferIdx < bufferSize);
+        buffer[bufferIdx++] = ch;
     }
-    assert(bufferIdx < bufferSize);         //comprovar que no ens passem del tamany del buffer
-    buffer[bufferIdx++] = '\0';             //afegim "\0" per acbabar cadena
-    document->title = strdup(buffer);       //guardem el títol al doc
+    assert(bufferIdx < bufferSize);
+    buffer[bufferIdx++] = '\0';
+    document->title = strdup(buffer);
 
     // parse body
-    char *linkBuffer = NULL;
+    char linkBuffer[64];
+    int linkBufferSize = 64;
     int linkBufferIdx = 0;
     bool parsingLink = false;
     Link *links = LinksInit();
@@ -202,35 +202,21 @@ Document *document_desserialize(char *path) {
         if (parsingLink) {
             if (ch == ')') { // end of link
                 parsingLink = false;
-                linkBuffer[linkBufferIdx] = '\0';
+                assert(linkBufferIdx < linkBufferSize);
+                linkBuffer[linkBufferIdx++] = '\0';
                 int linkId = atoi(linkBuffer);
 
                 // TODO add to links
-                afegir_link(&links, linkId);    //afegim el link a la llista
+                afegir_link(&links, linkId);
 
-                free(linkBuffer);              //alliberem el buffer
-                linkBuffer = NULL;             //reiniciem el buffer
                 linkBufferIdx = 0;
-            } else if (ch != '(') { 
-                linkBuffer = realloc(linkBuffer, linkBufferIdx + 2); // +1 for new char, +1 for '\0'
-                if (linkBuffer==NULL) { 
-                    fprintf(stderr, "Error: No s'ha pogut reservar memòria per al buffer.\n");
-                    exit(EXIT_FAILURE);// Comprovació per evitar desbordaments
-                } 
-                linkBuffer[linkBufferIdx++] = ch; // afegim el caràcter al buffer
-            }
+            } else if (ch != '(') { // skip first parenthesis of the link
+                assert(linkBufferIdx < linkBufferSize);
+                linkBuffer[linkBufferIdx++] = ch;
+            } 
+        } else if (ch == ']') { // found beginning of link id, e.g.: [my link text](123)
+          parsingLink = true;
         }
-        else if (ch == ']') { // Inici d'un enllaç
-            parsingLink = true;
-
-            // Inicialitzar el buffer per al nou enllaç
-            linkBuffer = malloc(1);
-            if (linkBuffer == NULL) {
-                fprintf(stderr, "Error: No s'ha pogut reservar memòria per al buffer.\n");
-                exit(EXIT_FAILURE);
-            }
-            linkBufferIdx = 0;
-        }   
     }
     assert(bufferIdx < bufferSize);
     buffer[bufferIdx++] = '\0';
@@ -239,14 +225,10 @@ Document *document_desserialize(char *path) {
     strcpy(body, buffer);
 
     // TODO
-    document->body = body;      //guardem el body al doc
-    document->links = links;    //guardem links linked list al doc
+    document->body = body;
+    document->links = links;
 
-    if (linkBuffer != NULL) {
-        free(linkBuffer);
-    }
-
-    fclose(f);                  //tanquem fitxer
+    fclose(f);
     return document;
 }
 
