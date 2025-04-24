@@ -4,8 +4,8 @@
 #include <dirent.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <dirent.h>
 #include "document.h"
-#include "link.h"
 
 
 //crear node llista
@@ -72,7 +72,7 @@ void afegir_link_pos(Link *prev_link, int id){
 }
 
 //alliberar llista (borra nodes)
-void alliberar_links(Link *head){
+void free_links(Link *head){
     Link *temp;
     while(head != NULL){
         temp = head;
@@ -190,8 +190,7 @@ Document *document_desserialize(char *path) {
     document->title = strdup(buffer);       //guardem el títol al doc
 
     // parse body
-    char linkBuffer[64];
-    int linkBufferSize = 64;
+    char *linkBuffer = NULL;
     int linkBufferIdx = 0;
     bool parsingLink = false;
     Link *links = LinksInit();
@@ -203,21 +202,35 @@ Document *document_desserialize(char *path) {
         if (parsingLink) {
             if (ch == ')') { // end of link
                 parsingLink = false;
-                assert(linkBufferIdx < linkBufferSize);
-                linkBuffer[linkBufferIdx++] = '\0';
+                linkBuffer[linkBufferIdx] = '\0';
                 int linkId = atoi(linkBuffer);
 
                 // TODO add to links
                 afegir_link(&links, linkId);    //afegim el link a la llista
 
+                free(linkBuffer);              //alliberem el buffer
+                linkBuffer = NULL;             //reiniciem el buffer
                 linkBufferIdx = 0;
-            } else if (ch != '(') { // skip first parenthesis of the link
-                assert(linkBufferIdx < linkBufferSize);
-                linkBuffer[linkBufferIdx++] = ch;
-            } 
-        } else if (ch == ']') { // found beginning of link id, e.g.: [my link text](123)
-          parsingLink = true;
+            } else if (ch != '(') { 
+                linkBuffer = realloc(linkBuffer, linkBufferIdx + 2); // +1 for new char, +1 for '\0'
+                if (linkBuffer==NULL) { 
+                    fprintf(stderr, "Error: No s'ha pogut reservar memòria per al buffer.\n");
+                    exit(EXIT_FAILURE);// Comprovació per evitar desbordaments
+                } 
+                linkBuffer[linkBufferIdx++] = ch; // afegim el caràcter al buffer
+            }
         }
+        else if (ch == ']') { // Inici d'un enllaç
+            parsingLink = true;
+
+            // Inicialitzar el buffer per al nou enllaç
+            linkBuffer = malloc(1);
+            if (linkBuffer == NULL) {
+                fprintf(stderr, "Error: No s'ha pogut reservar memòria per al buffer.\n");
+                exit(EXIT_FAILURE);
+            }
+            linkBufferIdx = 0;
+        }   
     }
     assert(bufferIdx < bufferSize);
     buffer[bufferIdx++] = '\0';
@@ -229,10 +242,63 @@ Document *document_desserialize(char *path) {
     document->body = body;      //guardem el body al doc
     document->links = links;    //guardem links linked list al doc
 
+    if (linkBuffer != NULL) {
+        free(linkBuffer);
+    }
+
     fclose(f);                  //tanquem fitxer
     return document;
 }
 
+DocumentNode *document_desserialize_dir(const char* path) {
+    DIR *dir = opendir(path);
+    struct dirent *entry;
+    if (dir == NULL) {
+        perror("Error al abrir el directorio");
+        return NULL;
+    }
+
+    DocumentNode *head = NULL; 
+    DocumentNode *current = NULL; 
+
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+
+        char file_path[1024];
+        snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
+
+        Document *doc = document_desserialize(file_path);
+        if (doc == NULL) {
+            fprintf(stderr, "Error al deserializar el archivo: %s\n", file_path);
+            continue;
+        }
+
+        DocumentNode *new_node = (DocumentNode *)malloc(sizeof(DocumentNode));
+        if(new_node==NULL){
+            perror("Error al reservar memòria per al node");
+            closedir(dir);
+            return NULL;
+        }
+        new_node->doc = doc;
+        new_node->next = NULL;
+
+        if (head == NULL) {
+            head = new_node;
+        } else {
+            current->next = new_node;
+        }
+        current = new_node;
+    }
+
+    closedir(dir); 
+    return head;   
+}  
+
+
+
+//imprimir documents
 void print_document(Document *doc){
     if (doc!=NULL){
         printf("ID: %d\n",doc->id);
@@ -250,3 +316,25 @@ void print_document(Document *doc){
         printf("Docment is NULL \n");
     }
 }
+
+void free_document(Document* doc) {
+    if (doc == NULL) return;
+    free(doc->title);       
+    free(doc->body);        
+    free_links(doc->links); 
+    free(doc);              
+}
+
+
+void free_documents_list(DocumentNode *docs) {
+    Document *current = docs->doc;
+    while (current != NULL) {
+        Document *next = docs->next->doc;
+        free_document(current);
+        current = next;
+    }
+    free(docs);
+}
+
+
+
