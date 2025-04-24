@@ -19,7 +19,7 @@ typedef struct DocumentNode {
 
 
 
-DocumentNode *document_desserialize_dir(const char* path);
+DocumentNode *loadAllDocuments(const char* path);
 Document *document_desserialize(char *path);
 Link *LinksInit();
 Link *crear_link(int id);

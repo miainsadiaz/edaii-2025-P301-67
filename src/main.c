@@ -36,7 +36,7 @@ int main() {
 
   
   const char* path = "./datasets/wikipedia12";
-  DocumentNode* docs = document_desserialize_dir(path);
+  DocumentNode* docs = loadAllDocuments(path);
 
   DocumentNode* current_doc = docs;
   while (current_doc != NULL) {

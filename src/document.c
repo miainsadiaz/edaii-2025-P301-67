@@ -250,7 +250,7 @@ Document *document_desserialize(char *path) {
     return document;
 }
 
-DocumentNode *document_desserialize_dir(const char* path) {
+DocumentNode *loadAllDocuments(const char* path) {
     DIR *dir = opendir(path);
     struct dirent *entry;
     if (dir == NULL) {
