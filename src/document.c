@@ -230,21 +230,20 @@ Document *document_desserialize(char *path) {
     return document;
 }
 
-void print_document(Document *doc) {
-    if (doc != NULL) {
-        printf("ID: %d\n", doc->id);
-        printf("Title: %s\n", doc->title);
-        printf("Body: %s\n", doc->body);
-        
-        // Imprimir los links
-        Link *current = doc->links;
-        printf("Links: ");
-        while (current != NULL) {
-            printf("%d ", current->id);
-            current = current->next;
+void print_document(Document *doc){
+    if (doc!=NULL){
+        printf("ID: %d\n",doc->id);
+        printf("Title: %s\n",doc->title);
+        printf("Body: %s\n",doc->body);
+        // imprimir los links
+        Link *current =doc->links;
+        print("Links: ");
+        while (current !=NULL){
+            printf("%d",current->id);
+            current=current->next;
         }
         printf("\n");
-    } else {
-        printf("Document is NULL\n");
+    }else{
+        printf("Docment is NULL \n");
     }
 }
