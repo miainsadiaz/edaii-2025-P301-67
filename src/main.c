@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <query.h>
 
 void createaleak() {
   char *foo = malloc(20 * sizeof(char));
@@ -51,6 +52,36 @@ int main() {
     current_doc = current_doc->next;
     free(temp);
   }
+
+  char input[256];
+
+    // Carreguem tots els documents al principi
+    DocumentNode *docs = loadAllDocuments("./datasets/wikipedia12");
+
+    while (1) {
+        printf("Enter query (or empty to quit): ");
+        fgets(input, 256, stdin);
+
+        if (input[0] == '\n') break; // Si l’usuari prem enter, sortim
+
+        input[strcspn(input, "\n")] = '\0'; // Eliminem el \n final
+
+        // Convertim el text en estructura Query
+        Query *query = parseQuery(input);
+
+        // Apliquem el filtre
+        DocumentNode *results = filterDocuments(docs, query);
+
+        // Imprimim els resultats
+        for (DocumentNode *cur = results; cur != NULL; cur = cur->next) {
+            print_document(cur->doc); // Mostrem el document a l’usuari
+        }
+
+        // TODO: alliberar memòria de Query i resultats
+    }
+
+    // Alliberem tots els documents
+    free_documents_list(docs);
 
   // uncomment and run "make v" to see how valgrind detects memory leaks
   // createaleak();

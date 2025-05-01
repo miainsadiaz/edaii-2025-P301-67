@@ -307,11 +307,11 @@ void free_document(Document *doc) {
 }
 
 void free_documents_list(DocumentNode *docs) {
-  Document *current = docs->doc;
+    DocumentNode *current = docs;
   while (current != NULL) {
-    Document *next = docs->next->doc;
-    free_document(current);
-    current = next;
+      DocumentNode *next = current->next;
+      free_document(current->doc);
+      free(current);
+      current = next;
   }
-  free(docs);
 }

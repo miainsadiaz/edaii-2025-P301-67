@@ -1,0 +1,152 @@
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include "query.h"
+#include "document.h"
+
+// Funció que converteix una cadena d'entrada en una struct Query
+// La cadena és separada en paraules i es crea una llista vinculada de QueryItem
+Query *parseQuery(const char *input) {
+    // Reservem memòria per la struct Query principal
+    Query *query = malloc(sizeof(Query));
+    if (query == NULL) {
+        fprintf("Error al reservar memòria per al node");
+        return NULL;
+    }
+
+    query->head = NULL;
+
+    // Copiem el text d’entrada perquè strtok el modifica
+    char *copy = strdup(input);
+    char *token = strtok(copy, " "); // Separem pel primer espai
+
+    QueryItem *last = NULL; // Punter per afegir nous items
+
+    while (token != NULL) {
+        // Reservem memòria per cada paraula de la query
+        QueryItem *item = malloc(sizeof(QueryItem));
+        if (item == NULL) {
+            fprintf("Error al reservar memòria per al node");
+            return NULL;
+        }
+
+        // Si comença per '-', és una paraula exclosa
+        item->is_exclusion = (token[0] == '-');
+
+        // Comprovem si la paraula és exclosa (comença amb '-')
+        if (item->is_exclusion) {
+            item->word = strdup(token + 1);  // Ignorem el primer caràcter ('-')
+        } else {
+            item->word = strdup(token);  // Agafem la paraula tal qual
+        }
+
+        item->next = NULL;
+
+        // Afegim l’item a la llista
+        if (last == NULL) {
+            query->head = item; // Primer element
+        } else {
+            last->next = item;  // Afegim al final
+        }
+
+        last = item; // Actualitzem l'últim
+
+        token = strtok(NULL, " "); // Anem al següent mot
+    }
+
+    free(copy); // Alliberem la còpia temporal
+    return query;
+}
+
+// Funció auxiliar per veure si un text conté una paraula
+// Retorna 'true' si el text conté la paraula, 'false' en cas contrari
+bool contains_word(const char *text, const char *word) {
+    return strstr(text, word) != NULL; // Busca substring
+}
+
+// Filtra una llista de documents segons la query
+// Retorna una llista de documents que compleixen amb totes les condicions de la query
+DocumentNode *filterDocuments(DocumentNode *docs, Query *query) {
+    DocumentNode *result = NULL; // Capçalera de resultats
+    DocumentNode *last = NULL;   // Punter al final de resultats
+    int count = 0; // Comptador per limitar a 5
+
+    for (DocumentNode *cur = docs; cur != NULL && count < 5; cur = cur->next) {
+        bool valid = true; // Suposem que el document és vàlid
+
+        // Recorrem tots els mots de la query
+        for (QueryItem *item = query->head; item != NULL; item = item->next) {
+            bool found = contains_word(cur->doc->body, item->word);
+
+            // Si és exclusió i la trobem → descartem
+            if ((item->is_exclusion && found) ||
+                (!item->is_exclusion && !found)) {
+                valid = false;
+                break;
+            }
+        }
+
+        // Si el document és vàlid, l’afegim a la nova llista
+        if (valid) {
+            DocumentNode *copy = malloc(sizeof(DocumentNode));
+            copy->doc = cur->doc;
+            copy->next = NULL;
+
+            if (result == NULL) result = copy;
+            else last->next = copy;
+
+            last = copy;
+            count++;
+        }
+    }
+
+    return result; // Retornem la llista filtrada
+}
+
+// Allibera la memòria de la query, incloent els elements de la llista vinculada
+void free_query(Query *query) {
+    QueryItem *current = query->head;
+    while (current != NULL) {
+        QueryItem *next = current->next;
+        free(current->word);  // Alliberem la memòria de la paraula
+        free(current);        // Alliberem la memòria del node
+        current = next;
+    }
+    free(query);  // Alliberem la memòria de la struct Query
+}
+
+// Inicialitza una nova cua de consultes (QueryQueue) amb 3 llocs disponibles
+QueryQueue* init_query_queue() {
+    QueryQueue *queue = malloc(sizeof(QueryQueue));
+    queue->front = 0;
+    queue->rear = 0;
+    return queue;
+}
+
+// Afegeix una nova consulta a la cua. Si la cua està plena, elimina la consulta més antiga
+void enqueue_query(QueryQueue *queue, Query *query) {
+    if ((queue->rear + 1) % 3 == queue->front) {
+        // Si la cua està plena, eliminem la consulta més antiga
+        free_query(queue->queries[queue->front]); // Alliberar la memòria de la consulta
+        queue->front = (queue->front + 1) % 3;
+    }
+    queue->queries[queue->rear] = query;
+    queue->rear = (queue->rear + 1) % 3;
+}
+
+// Imprimeix les últimes consultes de la cua (fins a un màxim de 3)
+void print_last_queries(QueryQueue *queue) {
+    int i = queue->front;
+    int count = 0;
+    while (count < 3 && i != queue->rear) {
+        printf("Query: ");
+        QueryItem *current_item = queue->queries[i]->head;
+        while (current_item != NULL) {
+            printf("%s ", current_item->word);
+            current_item = current_item->next;
+        }
+        printf("\n");
+        i = (i + 1) % 3;
+        count++;
+    }
+}
