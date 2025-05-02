@@ -72,16 +72,26 @@ int main() {
         // Apliquem el filtre
         DocumentNode *results = filterDocuments(docs, query);
 
-        // Imprimim els resultats
-        for (DocumentNode *cur = results; cur != NULL; cur = cur->next) {
-            print_document(cur->doc); // Mostrem el document a l’usuari
-        }
-
-        // TODO: alliberar memòria de Query i resultats
+        // Imprimim els resultats (MODIFICAT)
+        DocumentNode *current_result = results;
+        while (current_result != NULL) {
+          print_document(current_result->doc);
+          current_result = current_result->next;
     }
 
-    // Alliberem tots els documents
-    free_documents_list(docs);
+
+    DocumentNode *temp;
+    while (results != NULL) {
+        temp = results;
+        results = results->next;
+        free(temp);
+    }
+    // TODO: alliberar memòria de Query i resultats (MODIFICAT)
+    free_query(query);
+     
+
+    // Alliberem tots els documents (MODIFICAT)
+    //free_documents_list(docs);
 
   // uncomment and run "make v" to see how valgrind detects memory leaks
   // createaleak();

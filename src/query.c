@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -15,30 +16,48 @@ Query *parseQuery(const char *input) {
     }
 
     query->head = NULL;
-
+    //(MODIFICAT)
     // Copiem el text d’entrada perquè strtok el modifica
     char *copy = strdup(input);
-    char *token = strtok(copy, " "); // Separem pel primer espai
+    if (copy==NULL){
+        fprintf("Error al reservar memòria per a la còpia");
+        free(query);
+        return NULL;
+    }
+
 
     QueryItem *last = NULL; // Punter per afegir nous items
+    char *token = strtok(copy, " "); // Separem pel primer espai
 
     while (token != NULL) {
         // Reservem memòria per cada paraula de la query
         QueryItem *item = malloc(sizeof(QueryItem));
         if (item == NULL) {
             fprintf("Error al reservar memòria per al node");
+            free_query(query); //MODIFICAT
+            free(copy);
             return NULL;
         }
 
+
+        
         // Si comença per '-', és una paraula exclosa
         item->is_exclusion = (token[0] == '-');
+        item->word = strdup(token + (item->is_exclusion ? 1:0)); //això fa que si es true es reotrni 1 y sino 0
 
         // Comprovem si la paraula és exclosa (comença amb '-')
         if (item->is_exclusion) {
-            item->word = strdup(token + 1);  // Ignorem el primer caràcter ('-')
+          item->word = strdup(token + 1);  // Ignorem el primer caràcter ('-')
         } else {
-            item->word = strdup(token);  // Agafem la paraula tal qual
+           item->word = strdup(token);  // Agafem la paraula tal qual
         }
+       if(item->word==NULL){
+        fprintf(stderr,"Hi ha hagut un error al reservar memòria per a la paraula");
+        free(item);
+        free_query(query);
+        free(copy);
+        return NULL;
+       }
 
         item->next = NULL;
 
@@ -118,6 +137,12 @@ void free_query(Query *query) {
 // Inicialitza una nova cua de consultes (QueryQueue) amb 3 llocs disponibles
 QueryQueue* init_query_queue() {
     QueryQueue *queue = malloc(sizeof(QueryQueue));
+
+    if(queue==NULL){
+        fprintf(stderr, "Hi ha hagut un error al reservar memòria per a la cua");
+        return NULL;
+    }
+    
     queue->front = 0;
     queue->rear = 0;
     return queue;
