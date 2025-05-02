@@ -2,27 +2,24 @@
 #include <stdbool.h>
 
 typedef struct QueryItem {
-    char *word;
-    bool is_exclusion; // Per gestionar paraules excloses
-    struct QueryItem *next;
+  char *word;
+  bool is_exclusion; // Per gestionar paraules excloses
+  struct QueryItem *next;
 } QueryItem;
 
 typedef struct Query {
-    QueryItem *head;
+  QueryItem *head;
 } Query;
 
 typedef struct QueryQueue {
-    Query *queries[3]; // Màxim 3 consultes
-    int front, rear; //rear --> índex de l'últim element de la cua
+  Query *queries[3]; // Màxim 3 consultes
+  int front, rear;   // rear --> índex de l'últim element de la cua
 } QueryQueue;
-
 
 Query *parseQuery(const char *input);
 bool contains_word(const char *text, const char *word);
 DocumentNode *filterDocuments(DocumentNode *docs, Query *query);
 void free_query(Query *query);
-QueryQueue* init_query_queue();
+QueryQueue *init_query_queue();
 void enqueue_query(QueryQueue *queue, Query *query);
 void print_last_queries(QueryQueue *queue);
-
-
