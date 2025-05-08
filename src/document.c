@@ -206,7 +206,7 @@ Document *document_desserialize(char *path) {
         int linkId = atoi(linkBuffer);
 
         // TODO add to links
-        afegir_link(&links, linkId);
+        afegir_link_si_no_existeix(&links, linkId);
 
         linkBufferIdx = 0;
       } else if (ch != '(') { // skip first parenthesis of the link
@@ -314,4 +314,16 @@ void free_documents_list(DocumentNode *docs) {
     free(current);
     current = next;
   }
+}
+
+// afegir un link només si no existeix ja a la llista
+void afegir_link_si_no_existeix(Link **head, int id) {
+  Link *temp = *head;
+  while (temp != NULL) {
+    if (temp->id == id) {
+      return; // ja existeix, no fem res
+    }
+    temp = temp->next;
+  }
+  afegir_link(head, id); // no s'ha trobat, l'afegim al final
 }

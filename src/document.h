@@ -32,3 +32,4 @@ void eliminar_link_pos(Link **head, int pos);
 void print_document(Document *doc);
 void free_document(Document *doc);
 void free_documents_list(DocumentNode *docs);
+void afegir_link_si_no_existeix(Link **head, int id);

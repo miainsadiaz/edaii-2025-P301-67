@@ -46,17 +46,11 @@ int main() {
     current_doc = current_doc->next;
   }
 
-  while (current_doc != NULL) {
-    DocumentNode *temp = current_doc;
-    free_links(current_doc->doc->links);
-    current_doc = current_doc->next;
-    free(temp);
-  }
 
   char input[256];
 
   // Carreguem tots els documents al principi
-  DocumentNode *docs = loadAllDocuments("./datasets/wikipedia12");
+  //DocumentNode *docs = loadAllDocuments("./datasets/wikipedia12");
 
   while (1) {
     printf("Enter query (or empty to quit): ");
@@ -88,6 +82,8 @@ int main() {
     }
     // TODO: alliberar memòria de Query i resultats (MODIFICAT)
     free_query(query);
+    free_documents_list(docs);
+
 
     // Alliberem tots els documents (MODIFICAT)
     // free_documents_list(docs);

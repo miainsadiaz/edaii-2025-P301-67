@@ -11,7 +11,7 @@ Query *parseQuery(const char *input) {
   // Reservem memòria per la struct Query principal
   Query *query = malloc(sizeof(Query));
   if (query == NULL) {
-    fprintf("Error al reservar memòria per al node");
+    printf("Error al reservar memòria per al node");
     return NULL;
   }
 
@@ -20,7 +20,7 @@ Query *parseQuery(const char *input) {
   // Copiem el text d’entrada perquè strtok el modifica
   char *copy = strdup(input);
   if (copy == NULL) {
-    fprintf("Error al reservar memòria per a la còpia");
+    printf("Error al reservar memòria per a la còpia");
     free(query);
     return NULL;
   }
@@ -32,7 +32,7 @@ Query *parseQuery(const char *input) {
     // Reservem memòria per cada paraula de la query
     QueryItem *item = malloc(sizeof(QueryItem));
     if (item == NULL) {
-      fprintf("Error al reservar memòria per al node");
+      printf("Error al reservar memòria per al node");
       free_query(query); // MODIFICAT
       free(copy);
       return NULL;
