@@ -11,7 +11,7 @@ void createaleak() {
   printf("Allocated leaking string: %s", foo);
 }
 
-int main() {
+int main(){
   printf("*****************\nWelcome to EDA 2!\n*****************\n");
 
   // how to import and call a function
@@ -33,6 +33,9 @@ int main() {
   free(doc->title);
   free(doc->body);
   free(doc);*/
+
+  // Declarar la cua al principi del main
+  QueryQueue *query_history = init_query_queue();
 
   const char *path = "./datasets/wikipedia12";
   DocumentNode *docs = loadAllDocuments(path);
@@ -84,12 +87,16 @@ int main() {
     free_query(query);
     free_documents_list(docs);
 
+    
+    // ... després de parsejar i processar la consulta:
+    enqueue_query(query_history, query);
+    print_last_queries(query_history);
+    free_query_queue(query_history);
 
-    // Alliberem tots els documents (MODIFICAT)
-    // free_documents_list(docs);
+
 
     // uncomment and run "make v" to see how valgrind detects memory leaks
     // createaleak();
 
     return 0;
-  }
+  }}

@@ -4,6 +4,94 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAX_QUERIES 3
+
+QueryQueue *init_query_queue() {
+  QueryQueue *queue = (QueryQueue *)malloc(sizeof(QueryQueue));
+  queue->front = 0;
+  queue->rear = -1;
+  for (int i = 0; i < MAX_QUERIES; i++) {
+    queue->queries[i] = NULL;
+  }
+  return queue;
+}
+
+void enqueue_query(QueryQueue *queue, Query *query) {
+  // Incrementem rear de manera circular
+  queue->rear = (queue->rear + 1) % MAX_QUERIES;
+
+  // Si estem sobrescrivint una consulta antiga, l'alliberem
+  if (queue->queries[queue->rear] != NULL) {
+    free_query(queue->queries[queue->rear]);
+  }
+
+  queue->queries[queue->rear] = query;
+
+  // Si la cua no és plena encara, ajustem front
+  if (queue->rear == (queue->front - 1 + MAX_QUERIES) % MAX_QUERIES) {
+    queue->front = (queue->front + 1) % MAX_QUERIES;
+  }
+}
+
+
+void print_last_queries(QueryQueue *queue) {
+  printf("\nLes últimes consultes:\n");
+  int i = queue->front;
+  int count = 0;
+
+  while (count < MAX_QUERIES && queue->queries[i] != NULL) {
+    QueryItem *item = queue->queries[i]->head;
+    printf("- ");
+    while (item != NULL) {
+      if (item->is_exclusion) printf("!");
+      printf("%s ", item->word);
+      item = item->next;
+    }
+    printf("\n");
+
+    i = (i + 1) % MAX_QUERIES;
+    count++;
+  }
+}
+
+Query *parseQuery(const char *input) {
+    Query *query = (Query *)malloc(sizeof(Query));
+    query->head = NULL;
+  
+    char *copy = strdup(input);
+    char *token = strtok(copy, " ");
+  
+    QueryItem *last = NULL;
+  
+    while (token != NULL) {
+      QueryItem *item = (QueryItem *)malloc(sizeof(QueryItem));
+      item->is_exclusion = token[0] == '!';
+      item->word = strdup(item->is_exclusion ? token + 1 : token);
+      item->next = NULL;
+  
+      if (query->head == NULL) {
+        query->head = item;
+      } else {
+        last->next = item;
+      }
+      last = item;
+  
+      token = strtok(NULL, " ");
+    }
+  
+    free(copy);
+    return query;
+  }
+  
+  void free_query_queue(QueryQueue *queue) {
+    for (int i = 0; i < MAX_QUERIES; i++) {
+      if (queue->queries[i] != NULL) {
+        free_query(queue->queries[i]);
+      }
+    }
+    free(queue);
+  }
+  
 
 // Funció que converteix una cadena d'entrada en una struct Query
 // La cadena és separada en paraules i es crea una llista vinculada de QueryItem

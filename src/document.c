@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+//FUNCIONS DE LINK !!!
+
 // crear node llista
 Link *crear_link(int id) {
   Link *new_link = malloc(sizeof(Link)); // Allocate memòria per al node
@@ -157,109 +160,131 @@ void print_link_list(Link *head) {
   }
 }
 
+// afegir un link només si no existeix ja a la llista
+void afegir_link_si_no_existeix(Link **head, int id) {
+  Link *temp = *head;
+  while (temp != NULL) {
+    if (temp->id == id) {
+      return; // ja existeix, no fem res
+    }
+    temp = temp->next;
+  }
+  afegir_link(head, id); // no s'ha trobat, l'afegim al final
+}
+
+
+// FUNCIONS DE DOCUMENTS !!!
+// Funció que deserialitza un fitxer de text i retorna un punter a un Document
 Document *document_desserialize(char *path) {
   FILE *f = fopen(path, "r");
-  assert(f != NULL);
+  if(f == NULL){
+    perror("Error al obrir el fitxer");
+    return NULL;
+  }; // Comprovem que el fitxer s'ha obert correctament
 
-  Document *document = (Document *)malloc(sizeof(Document));
+  Document *document = (Document *)malloc(sizeof(Document)); // Reservem memòria pel document
 
-  char buffer[262144];
+  char buffer[262144]; // Buffer per emmagatzemar el contingut del fitxer
   int bufferSize = 262144;
   int bufferIdx = 0;
   char ch;
 
-  // parse id
+  // Llegim l’ID del document (fins a salt de línia)
   while ((ch = fgetc(f)) != '\n') {
     assert(bufferIdx < bufferSize);
     buffer[bufferIdx++] = ch;
   }
   assert(bufferIdx < bufferSize);
-  buffer[bufferIdx++] = '\0';
-  document->id = atoi(buffer);
+  buffer[bufferIdx++] = '\0'; // Tanquem la cadena
+  document->id = atoi(buffer); // Convertim a enter i l’assignem
 
-  // parse title
+  // Llegim el títol del document
   bufferIdx = 0;
   while ((ch = fgetc(f)) != '\n') {
     assert(bufferIdx < bufferSize);
     buffer[bufferIdx++] = ch;
   }
   assert(bufferIdx < bufferSize);
-  buffer[bufferIdx++] = '\0';
-  document->title = strdup(buffer);
+  buffer[bufferIdx++] = '\0'; // Tanquem la cadena
+  document->title = strdup(buffer); // Assignem el títol (còpia de la cadena)
 
-  // parse body
+  // Llegim el cos del document i extraïm enllaços (links)
   char linkBuffer[64];
   int linkBufferSize = 64;
   int linkBufferIdx = 0;
-  bool parsingLink = false;
-  Link *links = LinksInit();
+  bool parsingLink = false; // Indica si estem dins d’un enllaç
+  Link *links = LinksInit(); // Inicialitzem la llista d’enllaços
 
   bufferIdx = 0;
   while ((ch = fgetc(f)) != EOF) {
     assert(bufferIdx < bufferSize);
     buffer[bufferIdx++] = ch;
+
     if (parsingLink) {
-      if (ch == ')') { // end of link
+      if (ch == ')') { // Fi de l’enllaç
         parsingLink = false;
         assert(linkBufferIdx < linkBufferSize);
         linkBuffer[linkBufferIdx++] = '\0';
-        int linkId = atoi(linkBuffer);
+        int linkId = atoi(linkBuffer); // Convertim l’ID de l’enllaç
 
-        // TODO add to links
+        // Afegim l’enllaç a la llista si no existeix
         afegir_link_si_no_existeix(&links, linkId);
 
-        linkBufferIdx = 0;
-      } else if (ch != '(') { // skip first parenthesis of the link
+        linkBufferIdx = 0; // Reiniciem el buffer
+      } else if (ch != '(') { // Ometem la primera parèntesi
         assert(linkBufferIdx < linkBufferSize);
         linkBuffer[linkBufferIdx++] = ch;
       }
-    } else if (ch ==
-               ']') { // found beginning of link id, e.g.: [my link text](123)
+    } else if (ch == ']') { // Detectem l’inici d’un enllaç [text](ID)
       parsingLink = true;
     }
   }
-  assert(bufferIdx < bufferSize);
-  buffer[bufferIdx++] = '\0';
 
+  assert(bufferIdx < bufferSize);
+  buffer[bufferIdx++] = '\0'; // Tanquem la cadena del body
+
+  // Copiem el cos del document
   char *body = (char *)malloc(sizeof(char) * bufferIdx);
   strcpy(body, buffer);
 
-  // TODO
+  // Assignem el body i els enllaços al document
   document->body = body;
   document->links = links;
 
-  fclose(f);
-  return document;
+  fclose(f); // Tanquem el fitxer
+  return document; // Retornem el document
 }
 
+// Funció que carrega tots els documents d’un directori i els retorna com a llista
 DocumentNode *loadAllDocuments(const char *path) {
   DIR *dir = opendir(path);
   struct dirent *entry;
   if (dir == NULL) {
-    perror("Error al abrir el directorio");
+    perror("Error al obrir el directori");
     return NULL;
   }
 
   DocumentNode *head = NULL;
   DocumentNode *current = NULL;
 
+  // Recorrem tots els fitxers del directori
   while ((entry = readdir(dir)) != NULL) {
     if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-      continue;
+      continue; // Ometem els directoris especials
     }
 
     char file_path[1024];
     snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
 
-    Document *doc = document_desserialize(file_path);
+    Document *doc = document_desserialize(file_path); // Deserialitzem el document
     if (doc == NULL) {
-      fprintf(stderr, "Error al deserializar el archivo: %s\n", file_path);
+      fprintf(stderr, "Error al deserialitzar el fitxer: %s\n", file_path);
       continue;
     }
 
-    DocumentNode *new_node = (DocumentNode *)malloc(sizeof(DocumentNode));
+    DocumentNode *new_node = (DocumentNode *)malloc(sizeof(DocumentNode)); // Node nou per a la llista
     if (new_node == NULL) {
-      perror("Error al reservar memòria per al node");
+      perror("Error al reservar memòria pel node");
       closedir(dir);
       return NULL;
     }
@@ -267,35 +292,36 @@ DocumentNode *loadAllDocuments(const char *path) {
     new_node->next = NULL;
 
     if (head == NULL) {
-      head = new_node;
+      head = new_node; // Primer node
     } else {
-      current->next = new_node;
+      current->next = new_node; // Afegeix al final
     }
     current = new_node;
   }
 
-  closedir(dir);
-  return head;
+  closedir(dir); // Tanquem el directori
+  return head; // Retornem la capçalera de la llista
 }
 
-// imprimir documents
+// Funció per imprimir un document
 void print_document(Document *doc) {
   if (doc != NULL) {
     printf("ID: %d\n", doc->id);
-    printf("Title: %s\n", doc->title);
-    printf("Body: %s\n", doc->body);
-    // imprimir los links
+    printf("Títol: %s\n", doc->title);
+    printf("Cos: %s\n", doc->body);
+    // Imprimim els enllaços
     Link *current = doc->links;
-    printf("Links: ");
+    printf("Enllaços: ");
     while (current != NULL) {
       printf("%d", current->id);
       current = current->next;
     }
     printf("\n");
   } else {
-    printf("Docment is NULL \n");
+    printf("El document és NULL\n");
   }
 }
+
 
 void free_document(Document *doc) {
   if (doc == NULL)
@@ -316,14 +342,4 @@ void free_documents_list(DocumentNode *docs) {
   }
 }
 
-// afegir un link només si no existeix ja a la llista
-void afegir_link_si_no_existeix(Link **head, int id) {
-  Link *temp = *head;
-  while (temp != NULL) {
-    if (temp->id == id) {
-      return; // ja existeix, no fem res
-    }
-    temp = temp->next;
-  }
-  afegir_link(head, id); // no s'ha trobat, l'afegim al final
-}
+

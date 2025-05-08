@@ -23,3 +23,7 @@ void free_query(Query *query);
 QueryQueue *init_query_queue();
 void enqueue_query(QueryQueue *queue, Query *query);
 void print_last_queries(QueryQueue *queue);
+Query *parseQuery(const char *input);
+void print_last_queries(QueryQueue *queue);
+void enqueue_query(QueryQueue *queue, Query *query);
+void free_query_queue(QueryQueue *queue);
