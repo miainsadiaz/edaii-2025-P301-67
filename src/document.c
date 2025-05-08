@@ -361,6 +361,6 @@ while(end<=length){
     }
     start=end+1;
 }
-end++;
+end++; // irnos al siguiente carácter
 }}
 

@@ -17,6 +17,10 @@ int main(){
   // how to import and call a function
   printf("Factorial of 4 is %d\n", fact(4));
 
+
+  const char *str = "Hola mundo, cómo estás?"; //usamos como ejemplo (CANVIAR?)
+  split_string(str, ' ');  // Usamos el espacio como delimitador
+
   // Imprimir un document
 
   /*
