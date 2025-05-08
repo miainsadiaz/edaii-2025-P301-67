@@ -1,9 +1,12 @@
+#ifndef QUERY_H
+#define QUERY_H
+
 #include "document.h"
 #include <stdbool.h>
 
 typedef struct QueryItem {
   char *word;
-  bool is_exclusion; // Per gestionar paraules excloses
+  bool is_exclusion;
   struct QueryItem *next;
 } QueryItem;
 
@@ -12,8 +15,8 @@ typedef struct Query {
 } Query;
 
 typedef struct QueryQueue {
-  Query *queries[3]; // Màxim 3 consultes
-  int front, rear;   // rear --> índex de l'últim element de la cua
+  Query *queries[3];
+  int front, rear;
 } QueryQueue;
 
 Query *parseQuery(const char *input);
@@ -23,7 +26,6 @@ void free_query(Query *query);
 QueryQueue *init_query_queue();
 void enqueue_query(QueryQueue *queue, Query *query);
 void print_last_queries(QueryQueue *queue);
-Query *parseQuery(const char *input);
-void print_last_queries(QueryQueue *queue);
-void enqueue_query(QueryQueue *queue, Query *query);
 void free_query_queue(QueryQueue *queue);
+
+#endif // QUERY_H

@@ -5,6 +5,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// document.h
+#ifndef DOCUMENT_H
+#define DOCUMENT_H
+
+// Existing content...
+
+#endif // DOCUMENT_H
 
 
 //FUNCIONS DE LINK !!!
