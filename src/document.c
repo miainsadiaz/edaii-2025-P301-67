@@ -343,3 +343,24 @@ void free_documents_list(DocumentNode *docs) {
 }
 
 
+void split_string(const char *str, char delimiter){
+int start=0;
+int end=0;
+int length = strlen(str);
+
+while(end<=length){
+
+  if(str[end]==delimiter || str [end]=='\0'){
+    if(end>start){
+      char token[end-start+1];
+      strncpy(token,&str[start], end-start); // strncpy:copiar la subcadena sin el delimitador y aseguramos que el token esté correctamente terminado con un carácter nulo ('\0').
+
+      token[end-start]='\0';
+      printf("Token: %s\n", token);
+      
+    }
+    start=end+1;
+}
+end++;
+}}
+
