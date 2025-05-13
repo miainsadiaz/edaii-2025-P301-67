@@ -320,7 +320,7 @@ void print_document(Document *doc) {
     Link *current = doc->links;
     printf("Enllaços: ");
     while (current != NULL) {
-      printf("%d", current->id);
+      printf("%d, ", current->id);
       current = current->next;
     }
     printf("\n");
