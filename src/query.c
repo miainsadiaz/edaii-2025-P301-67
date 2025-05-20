@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX_QUERIES 3
 
@@ -62,6 +63,30 @@ void print_last_queries(QueryQueue *queue) {
         count++;
     }
 }
+
+void normalize_word(char*word){
+    //elimina la puntuacion inciial moviendo la palabra hacia la izq
+    while(*word&&ispunct((unsigned char)*word)){ //con ispunct se verifica si ese caracter es un signo de puntuacion
+    memmove(word,word+1,strlen(word)); //así se mueve toda la cadena una posicion a la izq
+        //mmove lo qe hace es mover la cadena de caracteres a la izquierda, así se elimina el primer carácter
+    }
+    
+    //elimina la putnuacion final
+    char *end=word+strlen(word)-1;
+    while(end>word&&ispunct((unsigned char)*end)){
+        *end='\0';
+        end--;
+    }
+        //convierte a mayuscula 
+        for(char *p=word;*p;++p){
+            
+                *p=toupper((unsigned char)*p);
+            }
+}
+    
+
+
+
 
 Query *parseQuery(const char *input) {
     if (input == NULL) return NULL;
