@@ -5,7 +5,6 @@
 #include "document.h"
 
 //node
-
 typedef struct HNode {
     char *key;
     DocumentNode *document;

@@ -1,11 +1,11 @@
 #include "hashmap.h"
 
 
-//crear node
-HNode *create_node(const char *key, Document *document) {
-    HNode *new_node = (HNode *)malloc(sizeof(HNode));
-    new_node->key = strdup(key);
-    DocumentNode *doc_list = (DocumentNode *)malloc(sizeof(DocumentNode));
+//crear node (key + document)
+HNode *create_node(const char *key, Document *document) {       
+    HNode *new_node = (HNode *)malloc(sizeof(HNode));           // reservem memòria pel node
+    new_node->key = strdup(key);        // copiem la clau
+    DocumentNode *doc_list = (DocumentNode *)malloc(sizeof(DocumentNode));  // creem un node de document i l'assignem al node del hashmap
     doc_list->doc = document;
     doc_list->next = NULL;
 
@@ -23,8 +23,8 @@ void init_hashmap(HashMap *map) {
 
 //insertar o actualitzar clau
 void put(HashMap *map, const char *key, Document *document) {
-    unsigned int index = hash(key);
-    HNode *current = map->array[index];
+    unsigned int index = hash(key); //obtenim la posició
+    HNode *current = map->array[index]; 
 
     while(current){
         if(strcmp(current->key, key) == 0){ //si la clau ja existeix, actualitzem
@@ -79,8 +79,9 @@ void remove_key(HashMap *map, const char *key) {
             } else {
                 map->array[index] = current->next; //eliminar node
             }
-            free(current->key);
-            free(current->document);
+            //alliberem
+            free(current->key); 
+            free(current->document);    
             free(current);
             return;
         }
@@ -136,7 +137,7 @@ void search_by_word(HashMap *map, const char *word){
 
 //funcions pel reverse index
 bool alafanumeric(char c){
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');  //comprovem si és alfanumèric
 }
 
 char to_min(char c){
@@ -146,7 +147,7 @@ char to_min(char c){
     return c;
 }
 
-void construir_reverse_index(HashMap *map, DocumentNode *docs) {
+void construir_reverse_index(HashMap *map, DocumentNode *docs) {    //assigna cada paraula als documents que la contenen
     DocumentNode *current = docs;
     while (current) {
         Document *doc = current->doc;
