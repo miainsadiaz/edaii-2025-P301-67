@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "grafs.h"
 
 void createaleak() {
   char *foo = malloc(20 * sizeof(char));
@@ -58,6 +59,29 @@ int main() {
   free_query_queue(query_history);
 
   return 0;*/
+  // Inicialitza el graf amb documents
+    DocumentNode *docs = loadAllDocuments("./datasets/wikipedia12");
+    if (!docs) {
+        printf("Error loading documents\n");
+        return 1;
+    }
+    
+    DocumentGraph graph;
+    init_graph(&graph, docs);
+
+    // Calcula rellevància per indegree
+    calcular_relevancia_indegree(&graph);
+
+    // Ordena documents per rellevància (decreixent)
+    ordenar_per_relevancia(&docs);
+
+    // Imprimeix documents amb rellevància
+    DocumentNode *curr = docs;
+    while (curr != NULL) {
+        printf("Doc: %s (ID %d) - Relevance: %.2f\n",
+               curr->doc->title, curr->doc->id, curr->doc->relevance);
+        curr = curr->next;
+    }
 
   //HASHMAP
   HashMap reverse_map;
