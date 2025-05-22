@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "document.h"
+#include "query.h"
 
 //node
 typedef struct HNode {
@@ -27,6 +28,7 @@ void search_by_word(HashMap *map, const char *word);
 bool alafanumeric(char c);
 char to_min(char c);
 void construir_reverse_index(HashMap *map, DocumentNode *docs);
+DocumentNode *search_with_reverse_index(HashMap *revserse_index, Query *queue);
 
 
 
