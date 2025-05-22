@@ -349,7 +349,6 @@ void free_documents_list(DocumentNode *docs) {
   }
 }
 
-
 void split_string(const char *str, char delimiter){
 int start=0;
 int end=0;
