@@ -8,14 +8,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "grafs.h"
-#include <ctype.h>  // per tolower()
-
-void to_lowercase(char *str) {
-    for (; *str; ++str) {
-        *str = tolower((unsigned char)*str);
-    }
-}
-
 
 void createaleak() {
   char *foo = malloc(20 * sizeof(char));
@@ -66,44 +58,53 @@ int main() {
   free_documents_list(docs);
   free_query_queue(query_history);
 
-  return 0;*/
+  return 0;
+  */
+
   // Inicialitza el graf amb documents
-  // Carreguem documents i inicialitzem el graf
     DocumentNode *docs = loadAllDocuments("./datasets/wikipedia12");
     if (!docs) {
         printf("Error loading documents\n");
         return 1;
     }
-
+    
     DocumentGraph graph;
     init_graph(&graph, docs);
+
+    // Calcula rellevància per indegree
     calcular_relevancia_indegree(&graph);
+
+    // Ordena documents per rellevància (decreixent)
     ordenar_per_relevancia(&docs);
 
+    // Imprimeix documents amb rellevància
     DocumentNode *curr = docs;
     while (curr != NULL) {
         printf("Doc: %s (ID %d) - Relevance: %.2f\n",
                curr->doc->title, curr->doc->id, curr->doc->relevance);
         curr = curr->next;
     }
+  
 
-    HashMap reverse_map;
-    init_hashmap(&reverse_map);
-    construir_reverse_index(&reverse_map, docs);
-
+  
+   //HASHMAP
+  HashMap reverse_map;
+  init_hashmap(&reverse_map);
+  
+  construir_reverse_index(&reverse_map, docs);
+  while(1){
     char input[256];
-    while (1) {
-        printf("Enter word to search (or empty to quit): ");
-        if (!fgets(input, 256, stdin) || input[0] == '\n') break;
+    printf("Enter word to search (or empty to quit): ");
+    fgets(input, 256, stdin);
 
-        input[strcspn(input, "\n")] = '\0';
-        to_lowercase(input);
+    if (input[0] == '\n')
+      break;
 
-        search_by_word(&reverse_map, input);
-    }
+    input[strcspn(input, "\n")] = '\0';
 
-    free_documents_list(docs);
-    free_hashmap(&reverse_map);
-
-    return 0;
+    search_by_word(&reverse_map, input);
+  }
+  free_documents_list(docs);
+  free_hashmap(&reverse_map);
+  return 0; 
 }
