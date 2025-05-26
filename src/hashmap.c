@@ -1,5 +1,4 @@
 #include "hashmap.h"
-#include "query.h"
 
 
 //crear node (key + document)
@@ -136,6 +135,8 @@ void search_by_word(HashMap *map, const char *word){
     printf("No s'ha trobat la paraula %s\n", word);
 }
 
+
+
 //funcions pel reverse index
 bool alafanumeric(char c){
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');  //comprovem si és alfanumèric
@@ -143,7 +144,7 @@ bool alafanumeric(char c){
 
 char to_min(char c){
     if(c >= 'A' && c <= 'Z'){
-        return c + 32; //convertim a minúscula
+        return c + ('a' - 'A'); //convertim a minúscula
     }
     return c;
 }
@@ -173,92 +174,3 @@ void construir_reverse_index(HashMap *map, DocumentNode *docs) {    //assigna ca
         current = current->next; // passem al següent document
     }
 }
-
-//funcio per buscar amb reverse index
-DocumentNode *search_with_reverse_index(HashMap *reverse_index, Query *queue){
-     DocumentNode *result=NULL;
-      DocumentNode *last=NULL; //para la linked list 
-
-
-      // per cada paraula de la query es busca el hashmap
-      // i es guarda el document a la linked list
-      // si el document ja existeix no es torna a afegir
-      // si no existeix es crea un nou node
-      // i es guarda a la linked list
-      for(QueryItem *item=queue->head; item!=NULL; item=item->next){
-        //if (item->is_exclusion){ //si és una exclusió
-       //     continue; //de momentno fem res
-       // }
-          unsigned int index = hash(item->word);
-          HNode *current = reverse_index->array[index];
-          DocumentNode *docs_for_word = NULL;
-
-
-
-          //busquem la paraula al hashmap
-          while(current){
-              if(strcmp(current->key, item->word) == 0){ //si la clau existeix
-                 docs_for_word = current->document;
-                 break;
-
-                
-          }
-             current = current->next;
-      }
-      if (!docs_for_word) { // si no hi ha documents per la paraula, no hi ha resultats
-         while(result){
-            DocumentNode *temp = result;
-            result = result->next;
-            free(temp);
-         }
-         return NULL;
-      }
-        //si hi ha documents per la paraula, afegim-los a la linked list
-        if(result==NULL){ //si és el primer document
-        
-            DocumentNode *current_doc = docs_for_word;
-            while(current_doc){
-                DocumentNode *new_node = malloc(sizeof(DocumentNode));
-                new_node->doc = current_doc->doc;
-                new_node->next = NULL;
-                if(last) last->next = new_node; //afegim a la linked list
-                else result = new_node; //si és el primer document
-                last = new_node; //actualitzem el últim node
-                current_doc = current_doc->next; //passem al següent document
-        }
-        }else{
-            //per les seguents paraules, es filtra la llista de resultats
-            DocumentNode *prev = NULL;
-            DocumentNode *current_doc = result;
-            while(current_doc){
-                
-                int found=0;
-                DocumentNode *docs_for_word_copy = docs_for_word;
-                while(docs_for_word_copy){
-                    if(current_doc->doc == docs_for_word_copy->doc){ //si el document ja existeix
-                        found=1; //el document ja existeix
-                        break;
-                    }
-                    docs_for_word_copy = docs_for_word_copy->next; //passem al següent document
-                }
-                if(!found){ //si el document no existeix
-                
-                    if(prev) prev->next = current_doc->next; //eliminem el node
-                    else result = current_doc->next; //si és el primer node, actualitzem la llista
-                    DocumentNode *temp = current_doc; //guardem el node a eliminar
-                    current_doc = current_doc->next; //passem al següent document
-                    free(temp); //alliberem la memòria
-            }else{
-                    prev = current_doc; //actualitzem el node anterior
-                    current_doc = current_doc->next; //passem al següent document
-                }
-            }
-//actualitza last
-            last=result;
-            while(last && last->next) last=last->next; //passem al últim node
-
-        }
-}
-return result; //retornem la llista de documents
-}
-

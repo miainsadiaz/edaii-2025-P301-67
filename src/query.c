@@ -45,13 +45,13 @@ void enqueue_query(QueryQueue *queue, Query *query) {
 void print_last_queries(QueryQueue *queue) {
     if (queue == NULL) return;
 
-    printf("\nRecent queries:\n");
+    printf("\n****** Recent Queries ******\n");
     int i = queue->front;
     int count = 0;
 
     while (count < MAX_QUERIES && queue->queries[i] != NULL) {
         QueryItem *item = queue->queries[i]->head;
-        printf("- ");
+        printf("* ");
         while (item != NULL) {
             if (item->is_exclusion) printf("!");
             printf("%s ", item->word);
@@ -62,6 +62,7 @@ void print_last_queries(QueryQueue *queue) {
         i = (i + 1) % MAX_QUERIES;
         count++;
     }
+    printf("\n****************************\n");
 }
 
 void normalize_word(char*word){

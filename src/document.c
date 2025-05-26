@@ -313,17 +313,22 @@ DocumentNode *loadAllDocuments(const char *path) {
 // Funció per imprimir un document
 void print_document(Document *doc) {
   if (doc != NULL) {
-    printf("ID: %d\n", doc->id);
-    printf("Títol: %s\n", doc->title);
-    printf("Cos: %s\n", doc->body);
+    printf("\n");
+    printf("\nID:\n%d\n", doc->id);
+    printf("\n");
+    printf("TÍTOL:\n%s\n", doc->title);
+    printf("\n");
+    printf("COS:\n%s\n", doc->body);
+    printf("\n");
     // Imprimim els enllaços
     Link *current = doc->links;
-    printf("Enllaços: ");
+    printf("ENLLAÇOS: \n");
     while (current != NULL) {
       printf("%d, ", current->id);
       current = current->next;
     }
     printf("\n");
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
   } else {
     printf("El document és NULL\n");
   }
