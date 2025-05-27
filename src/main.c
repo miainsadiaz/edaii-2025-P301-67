@@ -108,11 +108,11 @@ void print_search_results(Query *query, DocumentNode *results) {
   ordenar_per_relevancia(&docs);
 
   // Imprimeix documents amb rellevància
-  DocumentNode *curr = docs;
+  /*DocumentNode *curr = docs;
   while (curr != NULL) {
       printf("Doc: %s (ID %d) - Relevance: %.2f\n", curr->doc->title, curr->doc->id, curr->doc->relevance);
       curr = curr->next;
-  }
+  }*/ //--> AIXO NO SE SI CAAL !!
 
   // QUERY
   QueryQueue *query_history = init_query_queue();
