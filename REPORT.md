@@ -73,7 +73,5 @@ El sistema es divideix en 4 components principals:
 | Temps d’inicialització | Igual o lleugerament més alt |
 | Complexitat            | O(n·l) (mateixa)  |
 
-També es podria millorar amb **tries** per reduir el temps de cerca i la memòria si es comparteixen prefixos.
-
 ---
 
