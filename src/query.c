@@ -83,15 +83,13 @@ void normalize_word(char*word){
         *end='\0';
         end--;
     }
-        //convierte a mayuscula 
-        for(char *p=word;*p;++p){
-            
-                *p=toupper((unsigned char)*p);
-            }
+        // converteix a minúscula
+        for (char *p = word; *p; ++p) {
+        *p = tolower((unsigned char)*p);  
+}
+
 }
     
-
-
 
 
 Query *parseQuery(const char *input) {

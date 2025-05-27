@@ -145,6 +145,29 @@ void print_search_results(Query *query, DocumentNode *results) {
     }
   }
 
+  /*
+  // HASHMAP
+HashMap reverse_map;
+init_hashmap(&reverse_map);
+
+construir_reverse_index(&reverse_map, docs);
+
+while(1){
+    char input[256];
+    printf("Enter word to search (or empty to quit): ");
+    fgets(input, 256, stdin);
+
+    if (input[0] == '\n')
+      break;
+
+    input[strcspn(input, "\n")] = '\0';  // elimina salt de línia
+
+    normalize_word(input);              // normalitza la paraula (important)
+
+    search_by_word(&reverse_map, input);
+}
+*/
+
   free_documents_list(docs);
   free_query_queue(query_history);
 

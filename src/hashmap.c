@@ -165,6 +165,7 @@ void construir_reverse_index(HashMap *map, DocumentNode *docs) {    //assigna ca
             } else {
                 if (word_count > 0) {
                     word[word_count] = '\0'; // tanquem la paraula
+                    normalize_word(word);
                     put(map, word, doc); // afegim al hashmap
                     word_count = 0; // reiniciem el contador de paraules
                 }
