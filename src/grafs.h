@@ -10,7 +10,7 @@ typedef struct {
 
 // Funcions del graf
 void init_graph(DocumentGraph *graph, DocumentNode *docs);
-int get_indegree(DocumentGraph *graph, int target_id);
+int get_indegree(DocumentGraph *graph, int id_obj);
 void calcular_relevancia_indegree(DocumentGraph *graph);
 void print_relevancies(DocumentGraph *graph);
 void ordenar_per_relevancia(DocumentNode **docs);
