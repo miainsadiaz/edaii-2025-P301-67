@@ -181,11 +181,12 @@ void afegir_link_si_no_existeix(Link **head, int id) {
 
 
 // FUNCIONS DE DOCUMENTS !!!
+
 // Funció que deserialitza un fitxer de text i retorna un punter a un Document
 Document *document_desserialize(char *path) {
   FILE *f = fopen(path, "r");
   if(f == NULL){
-    perror("Error al obrir el fitxer");
+    printf("Error al obrir el fitxer");
     return NULL;
   }; // Comprovem que el fitxer s'ha obert correctament
 
@@ -198,12 +199,12 @@ Document *document_desserialize(char *path) {
 
   // Llegim l’ID del document (fins a salt de línia)
   while ((ch = fgetc(f)) != '\n') {
-    assert(bufferIdx < bufferSize);
+    assert(bufferIdx < bufferSize); // comprova si x no sobrepassa límit (assert diu si es true o false)
     buffer[bufferIdx++] = ch;
   }
   assert(bufferIdx < bufferSize);
   buffer[bufferIdx++] = '\0'; // Tanquem la cadena
-  document->id = atoi(buffer); // Convertim a enter i l’assignem
+  document->id = atoi(buffer); // Convertim a enter i l’assignem (atoi converteix una cadena de caràcters (char *) a un enter (int).)
 
   // Llegim el títol del document
   bufferIdx = 0;
@@ -264,10 +265,10 @@ Document *document_desserialize(char *path) {
 
 // Funció que carrega tots els documents d’un directori i els retorna com a llista
 DocumentNode *loadAllDocuments(const char *path) {
-  DIR *dir = opendir(path);
+  DIR *dir = opendir(path); //DIR --> directori
   struct dirent *entry;
   if (dir == NULL) {
-    perror("Error al obrir el directori");
+    printf("Error al obrir el directori");
     return NULL;
   }
 
@@ -334,7 +335,7 @@ void print_document(Document *doc) {
   }
 }
 
-
+//allibera document 
 void free_document(Document *doc) {
   if (doc == NULL)
     return;
@@ -344,6 +345,7 @@ void free_document(Document *doc) {
   free(doc);
 }
 
+//arribera llista de documents 
 void free_documents_list(DocumentNode *docs) {
   DocumentNode *current = docs;
   while (current != NULL) {
@@ -354,6 +356,8 @@ void free_documents_list(DocumentNode *docs) {
   }
 }
 
+
+//Divideix una cadena per separadors
 void split_string(const char *str, char delimiter){
 int start=0;
 int end=0;
@@ -372,6 +376,6 @@ while(end<=length){
     }
     start=end+1;
 }
-end++; // irnos al siguiente carácter
+end++; // anar al seguent caracter
 }}
 
