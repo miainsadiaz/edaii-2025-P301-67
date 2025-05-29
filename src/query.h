@@ -27,5 +27,6 @@ QueryQueue *init_query_queue();
 void enqueue_query(QueryQueue *queue, Query *query);
 void print_last_queries(QueryQueue *queue);
 void free_query_queue(QueryQueue *queue);
+void print_search_results(Query *query, DocumentNode *results);
 
 #endif // QUERY_H

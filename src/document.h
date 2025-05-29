@@ -36,9 +36,11 @@ void eliminar_ultim_link(Link **head);
 void free_links(Link *head);
 void eliminar_primer_link(Link **head);
 void eliminar_link_pos(Link **head, int pos);
-void print_document(Document *doc);
+void select_document_and_print(DocumentNode *results);
 void free_document(Document *doc);
 void free_documents_list(DocumentNode *docs);
+void print_document(Document *doc);
+
 
 #endif // DOCUMENT_H
 void afegir_link_si_no_existeix(Link **head, int id);

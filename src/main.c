@@ -10,84 +10,13 @@
 #include <ctype.h> 
 #include "grafs.h"
 
-/*void createaleak() {
+void createaleak() {
   char *foo = malloc(20 * sizeof(char));
   printf("Allocated leaking string: %s", foo);
-}*/
-
-void select_document_and_print(DocumentNode *results) {
-    if (results == NULL) {
-        printf("No hi ha documents a seleccionar.\n");
-        return;
-    }
-
-    printf("Data Structures and Algorithms II Ed. 2024/25\n");
-    printf("Escull document: ");
-
-    int selection;
-    if (scanf("%d", &selection) != 1) {
-        printf("Input incorrecte.\n");
-        // netejar stdin
-        while (getchar() != '\n');
-        return;
-    }
-
-    // netejar \n restant del buffer
-    while (getchar() != '\n');
-
-    int index = 0;
-    DocumentNode *current = results;
-    while (current != NULL) {
-        if (index == selection) {
-            printf("ID\n%d\n", current->doc->id);
-            printf("TITLE\n%s\n", current->doc->title);
-            printf("RELEVANCE SCORE\n%.0f\n", current->doc->relevance);
-            printf("BODY\n%s\n", current->doc->body);
-            return;
-        }
-        current = current->next;
-        index++;
-    }
-
-    printf("Selecció invalida. No hi ha cap document amb l'index %d.\n", selection);
-}
-
-void print_search_results(Query *query, DocumentNode *results) {
-    // Imprimir la consulta
-    printf("Consulta: ");
-    QueryItem *item = query->head;
-    while (item) {
-        if (item->is_exclusion) printf("!");
-        printf("%s", item->word);
-        if (item->next) printf(" ");
-        item = item->next;
-    }
-    printf("\n");
-
-    // Imprimir documents trobats
-    int count = 0;
-    DocumentNode *current = results;
-    while (current != NULL && count < 5) {
-        printf("(%d) %s\n", count, current->doc->title);
-        printf("---\n");
-        int printed = 0;
-        for (char *c = current->doc->body; *c != '\0' && printed < 300; c++, printed++) {
-            putchar(*c);
-        }
-        if (strlen(current->doc->body) > 300) {
-            printf("...");
-        }
-        printf("\n---\n");
-        printf("relevance score: %.0f\n", current->doc->relevance);
-        current = current->next;
-        count++;
-    }
-    printf("[%d results]\n", count);
-    printf("-----------------------------\n");
 }
 
 
-  int main() {
+int main() {
   printf("*****************************\nWelcome to the Search Engine!\n*****************************\n");
   printf("\n");
 
@@ -98,6 +27,7 @@ void print_search_results(Query *query, DocumentNode *results) {
       return 1;
   }
 
+  
   DocumentGraph graph;
   init_graph(&graph, docs);
 
@@ -107,12 +37,14 @@ void print_search_results(Query *query, DocumentNode *results) {
   // Ordena documents per rellevància (decreixent)
   ordenar_per_relevancia(&docs);
 
+  /*
   // Imprimeix documents amb rellevància
-  /*DocumentNode *curr = docs;
+  DocumentNode *curr = docs;
   while (curr != NULL) {
       printf("Doc: %s (ID %d) - Relevance: %.2f\n", curr->doc->title, curr->doc->id, curr->doc->relevance);
       curr = curr->next;
-  }*/ //--> AIXO NO SE SI CAAL !!
+  } //--> AIXO NO SE SI CAAL !!
+   */
 
   // QUERY
   QueryQueue *query_history = init_query_queue();
@@ -145,7 +77,7 @@ void print_search_results(Query *query, DocumentNode *results) {
     }
   }
 
-  /*
+ /*
   // HASHMAP
 HashMap reverse_map;
 init_hashmap(&reverse_map);
@@ -165,8 +97,8 @@ while(1){
     normalize_word(input);              // normalitza la paraula (important)
 
     search_by_word(&reverse_map, input);
-}
-*/
+}*/
+
 
   free_documents_list(docs);
   free_query_queue(query_history);

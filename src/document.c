@@ -9,7 +9,6 @@
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
 
-// Existing content...
 
 #endif // DOCUMENT_H
 
@@ -334,6 +333,45 @@ void print_document(Document *doc) {
     printf("El document és NULL\n");
   }
 }
+
+void select_document_and_print(DocumentNode *results) {
+    if (results == NULL) {
+        printf("No documents to select.\n");
+        return;
+    }
+
+    printf("Data Structures and Algorithms II Ed. 2024/25\n");
+    printf("Select document: ");
+
+    int selection;
+    if (scanf("%d", &selection) != 1) {
+        printf("Invalid input.\n");
+        // netejar stdin
+        while (getchar() != '\n');
+        return;
+    }
+
+    // netejar \n restant del buffer
+    while (getchar() != '\n');
+
+    int index = 0;
+    DocumentNode *current = results;
+    while (current != NULL) {
+        if (index == selection) {
+            printf("ID\n%d\n", current->doc->id);
+            printf("TITLE\n%s\n", current->doc->title);
+            printf("RELEVANCE SCORE\n%.0f\n", current->doc->relevance);
+            printf("BODY\n%s\n", current->doc->body);
+            return;
+        }
+        current = current->next;
+        index++;
+    }
+
+    printf("Invalid selection. No document at index %d.\n", selection);
+}
+
+
 
 //allibera document 
 void free_document(Document *doc) {

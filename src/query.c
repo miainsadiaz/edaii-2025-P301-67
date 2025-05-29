@@ -214,3 +214,38 @@ void free_query(Query *query) {
     }
     free(query);
 }
+
+void print_search_results(Query *query, DocumentNode *results) {
+    // Imprimir la consulta
+    printf("Search: ");
+    QueryItem *item = query->head;
+    while (item) {
+        if (item->is_exclusion) printf("!");
+        printf("%s", item->word);
+        if (item->next) printf(" ");
+        item = item->next;
+    }
+    printf("\n");
+
+    // Imprimir documents trobats
+    int count = 0;
+    DocumentNode *current = results;
+    while (current != NULL && count < 5) {
+        printf("(%d) %s\n", count, current->doc->title);
+        //printf("---\n");
+        int printed = 0;
+        for (char *c = current->doc->body; *c != '\0' && printed < 300; c++, printed++) {
+            putchar(*c);
+        }
+        if (strlen(current->doc->body) > 300) {
+            printf("...\n");
+        }
+        
+        printf("\nRelevance score: %.0f\n", current->doc->relevance);
+        printf("---\n");
+        current = current->next;
+        count++;
+    }
+    printf("[%d results]\n", count);
+    printf("-----------------------------\n");
+}
