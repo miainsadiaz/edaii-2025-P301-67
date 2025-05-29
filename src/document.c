@@ -186,8 +186,7 @@ Document *document_desserialize(char *path) {
     return NULL;
   }; // Comprovem que el fitxer s'ha obert correctament
 
-  Document *document =
-      (Document *)malloc(sizeof(Document)); // Reservem memòria pel document
+  Document *document = (Document *)malloc(sizeof(Document)); // Reservem memòria pel document
 
   char buffer[262144]; // Buffer per emmagatzemar el contingut del fitxer
   int bufferSize = 262144;
@@ -263,8 +262,7 @@ Document *document_desserialize(char *path) {
   return document; // Retornem el document
 }
 
-// Funció que carrega tots els documents d’un directori i els retorna com a
-// llista
+// Funció que carrega tots els documents d’un directori i els retorna com a llista
 DocumentNode *loadAllDocuments(const char *path) {
   DIR *dir = opendir(path); // DIR --> directori
   struct dirent *entry;
@@ -412,9 +410,7 @@ void split_string(const char *str, char delimiter) {
       if (end > start) {
         char token[end - start + 1];
         strncpy(token, &str[start],
-                end - start); // strncpy:copiar la subcadena sin el delimitador
-                              // y aseguramos que el token esté correctamente
-                              // terminado con un carácter nulo ('\0').
+                end - start); // strncpy:copiar la subcadena sin el delimitador y aseguramos que el token esté correctamente terminado con un carácter nulo ('\0').
 
         token[end - start] = '\0';
         printf("Token: %s\n", token);
