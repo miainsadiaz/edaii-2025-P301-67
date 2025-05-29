@@ -5,7 +5,7 @@
 
 // Estructura que representa tot el graf
 typedef struct {
-    DocumentNode *documents;  // llista de documents
+  DocumentNode *documents; // llista de documents
 } DocumentGraph;
 
 // Funcions del graf

@@ -9,11 +9,9 @@
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
 
-
 #endif // DOCUMENT_H
 
-
-//FUNCIONS DE LINK !!!
+// FUNCIONS DE LINK !!!
 
 // crear node llista
 Link *crear_link(int id) {
@@ -178,18 +176,18 @@ void afegir_link_si_no_existeix(Link **head, int id) {
   afegir_link(head, id); // no s'ha trobat, l'afegim al final
 }
 
-
 // FUNCIONS DE DOCUMENTS !!!
 
 // Funció que deserialitza un fitxer de text i retorna un punter a un Document
 Document *document_desserialize(char *path) {
   FILE *f = fopen(path, "r");
-  if(f == NULL){
+  if (f == NULL) {
     printf("Error al obrir el fitxer");
     return NULL;
   }; // Comprovem que el fitxer s'ha obert correctament
 
-  Document *document = (Document *)malloc(sizeof(Document)); // Reservem memòria pel document
+  Document *document =
+      (Document *)malloc(sizeof(Document)); // Reservem memòria pel document
 
   char buffer[262144]; // Buffer per emmagatzemar el contingut del fitxer
   int bufferSize = 262144;
@@ -198,12 +196,15 @@ Document *document_desserialize(char *path) {
 
   // Llegim l’ID del document (fins a salt de línia)
   while ((ch = fgetc(f)) != '\n') {
-    assert(bufferIdx < bufferSize); // comprova si x no sobrepassa límit (assert diu si es true o false)
+    assert(bufferIdx < bufferSize); // comprova si x no sobrepassa límit (assert
+                                    // diu si es true o false)
     buffer[bufferIdx++] = ch;
   }
   assert(bufferIdx < bufferSize);
   buffer[bufferIdx++] = '\0'; // Tanquem la cadena
-  document->id = atoi(buffer); // Convertim a enter i l’assignem (atoi converteix una cadena de caràcters (char *) a un enter (int).)
+  document->id =
+      atoi(buffer); // Convertim a enter i l’assignem (atoi converteix una
+                    // cadena de caràcters (char *) a un enter (int).)
 
   // Llegim el títol del document
   bufferIdx = 0;
@@ -212,14 +213,14 @@ Document *document_desserialize(char *path) {
     buffer[bufferIdx++] = ch;
   }
   assert(bufferIdx < bufferSize);
-  buffer[bufferIdx++] = '\0'; // Tanquem la cadena
+  buffer[bufferIdx++] = '\0';       // Tanquem la cadena
   document->title = strdup(buffer); // Assignem el títol (còpia de la cadena)
 
   // Llegim el cos del document i extraïm enllaços (links)
   char linkBuffer[64];
   int linkBufferSize = 64;
   int linkBufferIdx = 0;
-  bool parsingLink = false; // Indica si estem dins d’un enllaç
+  bool parsingLink = false;  // Indica si estem dins d’un enllaç
   Link *links = LinksInit(); // Inicialitzem la llista d’enllaços
 
   bufferIdx = 0;
@@ -237,7 +238,7 @@ Document *document_desserialize(char *path) {
         // Afegim l’enllaç a la llista si no existeix
         afegir_link_si_no_existeix(&links, linkId);
 
-        linkBufferIdx = 0; // Reiniciem el buffer
+        linkBufferIdx = 0;    // Reiniciem el buffer
       } else if (ch != '(') { // Ometem la primera parèntesi
         assert(linkBufferIdx < linkBufferSize);
         linkBuffer[linkBufferIdx++] = ch;
@@ -258,13 +259,14 @@ Document *document_desserialize(char *path) {
   document->body = body;
   document->links = links;
 
-  fclose(f); // Tanquem el fitxer
+  fclose(f);       // Tanquem el fitxer
   return document; // Retornem el document
 }
 
-// Funció que carrega tots els documents d’un directori i els retorna com a llista
+// Funció que carrega tots els documents d’un directori i els retorna com a
+// llista
 DocumentNode *loadAllDocuments(const char *path) {
-  DIR *dir = opendir(path); //DIR --> directori
+  DIR *dir = opendir(path); // DIR --> directori
   struct dirent *entry;
   if (dir == NULL) {
     printf("Error al obrir el directori");
@@ -283,13 +285,15 @@ DocumentNode *loadAllDocuments(const char *path) {
     char file_path[1024];
     snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
 
-    Document *doc = document_desserialize(file_path); // Deserialitzem el document
+    Document *doc =
+        document_desserialize(file_path); // Deserialitzem el document
     if (doc == NULL) {
       fprintf(stderr, "Error al deserialitzar el fitxer: %s\n", file_path);
       continue;
     }
 
-    DocumentNode *new_node = (DocumentNode *)malloc(sizeof(DocumentNode)); // Node nou per a la llista
+    DocumentNode *new_node = (DocumentNode *)malloc(
+        sizeof(DocumentNode)); // Node nou per a la llista
     if (new_node == NULL) {
       perror("Error al reservar memòria pel node");
       closedir(dir);
@@ -307,7 +311,7 @@ DocumentNode *loadAllDocuments(const char *path) {
   }
 
   closedir(dir); // Tanquem el directori
-  return head; // Retornem la capçalera de la llista
+  return head;   // Retornem la capçalera de la llista
 }
 
 // Funció per imprimir un document
@@ -328,52 +332,54 @@ void print_document(Document *doc) {
       current = current->next;
     }
     printf("\n");
-    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------------"
+           "-------------------------------------------------------------------"
+           "---------------------------------\n");
   } else {
     printf("El document és NULL\n");
   }
 }
 
 void select_document_and_print(DocumentNode *results) {
-    if (results == NULL) {
-        printf("No documents to select.\n");
-        return;
+  if (results == NULL) {
+    printf("No documents to select.\n");
+    return;
+  }
+
+  printf("Data Structures and Algorithms II Ed. 2024/25\n");
+  printf("Select document: ");
+
+  int selection;
+  if (scanf("%d", &selection) != 1) {
+    printf("Invalid input.\n");
+    // netejar stdin
+    while (getchar() != '\n')
+      ;
+    return;
+  }
+
+  // netejar \n restant del buffer
+  while (getchar() != '\n')
+    ;
+
+  int index = 0;
+  DocumentNode *current = results;
+  while (current != NULL) {
+    if (index == selection) {
+      printf("ID\n%d\n", current->doc->id);
+      printf("TITLE\n%s\n", current->doc->title);
+      printf("RELEVANCE SCORE\n%.0f\n", current->doc->relevance);
+      printf("BODY\n%s\n", current->doc->body);
+      return;
     }
+    current = current->next;
+    index++;
+  }
 
-    printf("Data Structures and Algorithms II Ed. 2024/25\n");
-    printf("Select document: ");
-
-    int selection;
-    if (scanf("%d", &selection) != 1) {
-        printf("Invalid input.\n");
-        // netejar stdin
-        while (getchar() != '\n');
-        return;
-    }
-
-    // netejar \n restant del buffer
-    while (getchar() != '\n');
-
-    int index = 0;
-    DocumentNode *current = results;
-    while (current != NULL) {
-        if (index == selection) {
-            printf("ID\n%d\n", current->doc->id);
-            printf("TITLE\n%s\n", current->doc->title);
-            printf("RELEVANCE SCORE\n%.0f\n", current->doc->relevance);
-            printf("BODY\n%s\n", current->doc->body);
-            return;
-        }
-        current = current->next;
-        index++;
-    }
-
-    printf("Invalid selection. No document at index %d.\n", selection);
+  printf("Invalid selection. No document at index %d.\n", selection);
 }
 
-
-
-//allibera document 
+// allibera document
 void free_document(Document *doc) {
   if (doc == NULL)
     return;
@@ -383,7 +389,7 @@ void free_document(Document *doc) {
   free(doc);
 }
 
-//arribera llista de documents 
+// arribera llista de documents
 void free_documents_list(DocumentNode *docs) {
   DocumentNode *current = docs;
   while (current != NULL) {
@@ -394,26 +400,27 @@ void free_documents_list(DocumentNode *docs) {
   }
 }
 
+// Divideix una cadena per separadors
+void split_string(const char *str, char delimiter) {
+  int start = 0;
+  int end = 0;
+  int length = strlen(str);
 
-//Divideix una cadena per separadors
-void split_string(const char *str, char delimiter){
-int start=0;
-int end=0;
-int length = strlen(str);
+  while (end <= length) {
 
-while(end<=length){
+    if (str[end] == delimiter || str[end] == '\0') {
+      if (end > start) {
+        char token[end - start + 1];
+        strncpy(token, &str[start],
+                end - start); // strncpy:copiar la subcadena sin el delimitador
+                              // y aseguramos que el token esté correctamente
+                              // terminado con un carácter nulo ('\0').
 
-  if(str[end]==delimiter || str [end]=='\0'){
-    if(end>start){
-      char token[end-start+1];
-      strncpy(token,&str[start], end-start); // strncpy:copiar la subcadena sin el delimitador y aseguramos que el token esté correctamente terminado con un carácter nulo ('\0').
-
-      token[end-start]='\0';
-      printf("Token: %s\n", token);
-      
+        token[end - start] = '\0';
+        printf("Token: %s\n", token);
+      }
+      start = end + 1;
     }
-    start=end+1;
+    end++; // anar al seguent caracter
+  }
 }
-end++; // anar al seguent caracter
-}}
-

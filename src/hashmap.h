@@ -1,21 +1,21 @@
+#include "document.h"
+#include "query.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
-#include "document.h"
-#include "query.h"
 
-//node
+// node
 typedef struct HNode {
-    char *key;
-    DocumentNode *document;
-    struct HNode *next;
+  char *key;
+  DocumentNode *document;
+  struct HNode *next;
 } HNode;
 
-//hashmap
-typedef struct HashMap{
-    HNode *array[100];
-}HashMap;
+// hashmap
+typedef struct HashMap {
+  HNode *array[100];
+} HashMap;
 
 HNode *create_node(const char *key, Document *document);
 void init_hashmap(HashMap *map);
@@ -30,6 +30,3 @@ void normalize_word(char *word);
 char to_min(char c);
 void construir_reverse_index(HashMap *map, DocumentNode *docs);
 DocumentNode *search_with_reverse_index(HashMap *revserse_index, Query *queue);
-
-
-

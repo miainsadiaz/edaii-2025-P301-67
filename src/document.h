@@ -1,15 +1,14 @@
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
 
-//llista doblement enllaçada de links
+// llista doblement enllaçada de links
 typedef struct Link {
   int id;
   struct Link *next;
   struct Link *prev;
 } Link;
 
-
-//estructura document 
+// estructura document
 typedef struct Document {
   char *title;
   int id;
@@ -18,7 +17,7 @@ typedef struct Document {
   char *body;
 } Document;
 
-//Llista enllaçada de documents
+// Llista enllaçada de documents
 typedef struct DocumentNode {
   Document *doc;
   struct DocumentNode *next;
@@ -40,7 +39,6 @@ void select_document_and_print(DocumentNode *results);
 void free_document(Document *doc);
 void free_documents_list(DocumentNode *docs);
 void print_document(Document *doc);
-
 
 #endif // DOCUMENT_H
 void afegir_link_si_no_existeix(Link **head, int id);

@@ -6,7 +6,6 @@ int main() {
   {
     // Call all test modules you want to run here
     sample_lib_test();
-    
   }
   allsuccess();
 }
