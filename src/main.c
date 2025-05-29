@@ -10,23 +10,23 @@
 #include <ctype.h> 
 #include "grafs.h"
 
-void createaleak() {
+/*void createaleak() {
   char *foo = malloc(20 * sizeof(char));
   printf("Allocated leaking string: %s", foo);
-}
+}*/
 
 void select_document_and_print(DocumentNode *results) {
     if (results == NULL) {
-        printf("No documents to select.\n");
+        printf("No hi ha documents a seleccionar.\n");
         return;
     }
 
     printf("Data Structures and Algorithms II Ed. 2024/25\n");
-    printf("Select document: ");
+    printf("Escull document: ");
 
     int selection;
     if (scanf("%d", &selection) != 1) {
-        printf("Invalid input.\n");
+        printf("Input incorrecte.\n");
         // netejar stdin
         while (getchar() != '\n');
         return;
@@ -49,12 +49,12 @@ void select_document_and_print(DocumentNode *results) {
         index++;
     }
 
-    printf("Invalid selection. No document at index %d.\n", selection);
+    printf("Selecció invalida. No hi ha cap document amb l'index %d.\n", selection);
 }
 
 void print_search_results(Query *query, DocumentNode *results) {
     // Imprimir la consulta
-    printf("Search: ");
+    printf("Consulta: ");
     QueryItem *item = query->head;
     while (item) {
         if (item->is_exclusion) printf("!");
