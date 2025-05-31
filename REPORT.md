@@ -69,7 +69,7 @@ El sistema es divideix en 4 components principals:
 
 | Factor                 | Canvi             |
 |------------------------|------------------|
-| Memòria                | Liger augment     |
+| Memòria                | Lleuger augment     |
 | Temps d’inicialització | Igual o lleugerament més alt |
 | Complexitat            | O(n·l) (mateixa)  |
 
