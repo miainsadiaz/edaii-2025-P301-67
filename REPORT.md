@@ -20,7 +20,7 @@ El sistema es divideix en 4 components principals:
 |----------------------------------------------------------------------------|----------------|------------------------------------------------------------------------------|
 | Parsing d’un document (amb links)                                          | O(n)           | Recorre cada caràcter del fitxer una sola vegada per llegir-lo i analitzar-lo |
 | Parsing d’una consulta (query)                                             | O(k)           | Divideix la consulta en k paraules mitjançant `strtok()`                     |
-| Comptar veïns (links) de TOTS els documents del graf                       | O(n·l)         | Cada document pot tenir l enllaços → es fa doble bucle                        |
+| Comptar nodes adjacents (links) de TOTS els documents del graf                       | O(n·l)         | Cada document pot tenir l enllaços → es fa doble bucle                        |
 | Comptar quants apunten a un sol document (`get_indegree`)                 | O(n·l)         | Cal revisar tots els enllaços de tots els documents                          |
 | Buscar documents per una paraula (amb índex invers)                        | O(1)           | Accés directe en el `HashMap` per clau                                       |
 | Buscar documents que compleixen TOTES les paraules d’una consulta         | O(k·d)         | Per cada paraula (k), es recorre una llista de d documents                   |
