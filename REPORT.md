@@ -58,8 +58,8 @@ El sistema es divideix en 4 components principals:
 
 **Proposta:** Separar l’índex en dos:
 
-- 🔹 *Short index*: només per les paraules dels títols
-- 🔹 *Full index*: per les paraules del cos del document
+- *Short index*: només per les paraules dels títols
+- *Full index*: per les paraules del cos del document
 
 **Avantatges:**
 - Prioritza documents més rellevants (el títol pesa més)
