@@ -30,7 +30,7 @@ El sistema es divideix en 4 components principals:
 
 ## 3. Gràfics i Discussió
 
-### 3.1 Temps de cerca amb / sense índex invers
+### 3.1 Temps de cerca amb / sense reverse índex
 
 ![grafica1.png](grafica1.png)
 
