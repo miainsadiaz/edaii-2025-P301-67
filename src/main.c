@@ -16,8 +16,7 @@ void createaleak() {
 }
 
 int main() {
-  printf("*****************************\nWelcome to the Search "
-         "Engine!\n*****************************\n");
+  printf("*****************************\nWelcome to the Search Engine!\n*****************************\n");
   printf("\n");
 
   //Inicialitza el graf amb documents

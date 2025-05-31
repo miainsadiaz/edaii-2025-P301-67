@@ -4,9 +4,7 @@
 HNode *create_node(const char *key, Document *document) {
   HNode *new_node = (HNode *)malloc(sizeof(HNode)); // reservem memòria pel node
   new_node->key = strdup(key);                      // copiem la clau
-  DocumentNode *doc_list = (DocumentNode *)malloc(
-      sizeof(DocumentNode)); // creem un node de document i l'assignem al node
-                             // del hashmap
+  DocumentNode *doc_list = (DocumentNode *)malloc(sizeof(DocumentNode)); // creem un node de document i l'assignem al node del hashmap
   doc_list->doc = document;
   doc_list->next = NULL;
 
@@ -138,8 +136,7 @@ void search_by_word(HashMap *map, const char *word) {
 
 // funcions pel reverse index
 bool alafanumeric(char c) {
-  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-         (c >= '0' && c <= '9'); // comprovem si és alfanumèric
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); // comprovem si és alfanumèric
 }
 
 char to_min(char c) {

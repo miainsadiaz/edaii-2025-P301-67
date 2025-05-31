@@ -37,8 +37,7 @@ void afegir_link(Link **head, int id) {
     *head = new_link;      // i últim node
     return;
   }
-  while (temp->next !=
-         NULL) { // si la llista no està buida, es buca l'últim node
+  while (temp->next != NULL) { // si la llista no està buida, es buca l'últim node
     temp = temp->next;
   }
 
@@ -53,8 +52,7 @@ void afegir_link_al_principi(Link **head, int id) {
   new_link->prev = NULL;           // No té anterior (és el primer)
 
   if (*head != NULL) {
-    (*head)->prev =
-        new_link; // Si hi havia un node, ara el nou serà l'anterior d'aquest
+    (*head)->prev = new_link; // Si hi havia un node, ara el nou serà l'anterior d'aquest
   }
 
   *head = new_link; // el nou es converteix en el 1r
@@ -70,8 +68,7 @@ void afegir_link_pos(Link *prev_link, int id) {
   prev_link->next = new_link;       // L'anterior apunta al nou
   new_link->prev = prev_link;       // El nou apunta a darrere a l'anterior
 
-  if (new_link->next != NULL) { // si el nou node té un següent, aquest ha de
-                                // saber que ara l'anteior és el nou
+  if (new_link->next != NULL) { // si el nou node té un següent, aquest ha de saber que ara l'anteior és el nou
     new_link->next->prev = new_link;
   }
 }
@@ -117,8 +114,7 @@ void eliminar_ultim_link(Link **head) {
   if (temp->prev != NULL) {
     temp->prev->next = NULL; // l'anterior ja no té següent
   } else {
-    *head =
-        NULL; // si no hi havia anterior, signnifica que només hi havia un node
+    *head = NULL; // si no hi havia anterior, signnifica que només hi havia un node
   }
 
   free(temp); // borrem l'últim node
@@ -195,15 +191,12 @@ Document *document_desserialize(char *path) {
 
   // Llegim l’ID del document (fins a salt de línia)
   while ((ch = fgetc(f)) != '\n') {
-    assert(bufferIdx < bufferSize); // comprova si x no sobrepassa límit (assert
-                                    // diu si es true o false)
+    assert(bufferIdx < bufferSize); // comprova si x no sobrepassa límit (assert diu si es true o false)
     buffer[bufferIdx++] = ch;
   }
   assert(bufferIdx < bufferSize);
   buffer[bufferIdx++] = '\0'; // Tanquem la cadena
-  document->id =
-      atoi(buffer); // Convertim a enter i l’assignem (atoi converteix una
-                    // cadena de caràcters (char *) a un enter (int).)
+  document->id = atoi(buffer); // Convertim a enter i l’assignem (atoi converteix una cadena de caràcters (char *) a un enter (int).)
 
   // Llegim el títol del document
   bufferIdx = 0;
@@ -330,9 +323,7 @@ void print_document(Document *doc) {
       current = current->next;
     }
     printf("\n");
-    printf("-------------------------------------------------------------------"
-           "-------------------------------------------------------------------"
-           "---------------------------------\n");
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
   } else {
     printf("El document és NULL\n");
   }
@@ -351,8 +342,7 @@ void select_document_and_print(DocumentNode *results) {
   if (scanf("%d", &selection) != 1) {
     printf("Invalid input.\n");
     // netejar stdin
-    while (getchar() != '\n')
-      ;
+    while (getchar() != '\n');
     return;
   }
 
@@ -405,12 +395,10 @@ void split_string(const char *str, char delimiter) {
   int length = strlen(str);
 
   while (end <= length) {
-
     if (str[end] == delimiter || str[end] == '\0') {
       if (end > start) {
         char token[end - start + 1];
-        strncpy(token, &str[start],
-                end - start); // strncpy:copiar la subcadena sin el delimitador y aseguramos que el token esté correctamente terminado con un carácter nulo ('\0').
+        strncpy(token, &str[start], end - start); // strncpy:copiar la subcadena sin el delimitador y aseguramos que el token esté correctamente terminado con un carácter nulo ('\0').
 
         token[end - start] = '\0';
         printf("Token: %s\n", token);

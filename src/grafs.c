@@ -32,8 +32,7 @@ int get_indegree(DocumentGraph *graph, int id_obj) {
 /*Calcula i assigna la rellevància a cada document segons el seu indegree.*/
 void calcular_relevancia_indegree(DocumentGraph *graph) {
   DocumentNode *current = graph->documents;
-  while (current) { // fins q current no es NULL, es a dir recorre tota la
-                    // llista
+  while (current) { // fins q current no es NULL, es a dir recorre tota la llista
     current->doc->relevance = (float)get_indegree(graph, current->doc->id);
     current = current->next;
   }
@@ -44,8 +43,7 @@ void calcular_relevancia_indegree(DocumentGraph *graph) {
 void print_relevancies(DocumentGraph *graph) {
   DocumentNode *current = graph->documents;
   while (current) {
-    printf("Document %s (amb l'id=%d) -> Relevance: %.2f\n",
-           current->doc->title, current->doc->id, current->doc->relevance);
+    printf("Document %s (amb l'id=%d) -> Relevance: %.2f\n", current->doc->title, current->doc->id, current->doc->relevance);
     current = current->next;
   }
 }
@@ -58,8 +56,7 @@ void ordenar_per_relevancia(DocumentNode **docs) {
     return;
   int canvi = 1;
 
-  while (canvi ==
-         1) { // quan no es 1 -> no s'ha fet cap canvi aleshores està ordenat
+  while (canvi ==1) { // quan no es 1 -> no s'ha fet cap canvi aleshores està ordenat
     canvi = 0;
     DocumentNode *current = *docs;
 
