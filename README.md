@@ -1,4 +1,4 @@
-![Unit Tests][(https://github.com/miainsadiaz/edaii-2025-P301-67]
+[(https://github.com/miainsadiaz/edaii-2025-P301-67]
 
 # Authors
 
