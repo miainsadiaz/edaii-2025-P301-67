@@ -222,7 +222,7 @@ void free_query(Query *query) {
 }
 
 void print_search_results(Query *query, DocumentNode *results) {
-  // Imprimir la consulta
+  // imprimir la consulta
   printf("Search: ");
   QueryItem *item = query->head;
   while (item) {
@@ -235,15 +235,14 @@ void print_search_results(Query *query, DocumentNode *results) {
   }
   printf("\n");
 
-  // Imprimir documents trobats
+  // imprimir documents trobats
   int count = 0;
   DocumentNode *current = results;
   while (current != NULL && count < 5) {
     printf("(%d) %s\n", count, current->doc->title);
     // printf("---\n");
     int printed = 0;
-    for (char *c = current->doc->body; *c != '\0' && printed < 300;
-         c++, printed++) {
+    for (char *c = current->doc->body; *c != '\0' && printed < 300; c++, printed++) {
       putchar(*c);
     }
     if (strlen(current->doc->body) > 300) {
