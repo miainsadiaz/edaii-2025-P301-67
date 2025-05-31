@@ -30,7 +30,7 @@ El sistema es divideix en 4 components principals:
 
 ## 3. Gràfics i Discussió
 
-### 3.1 Temps de cerca amb / sense reverse índex
+### 3.1 Temps de cerca amb / sense "reverse index"
 
 ![grafica1.png](grafica1.png)
 
@@ -54,7 +54,7 @@ El sistema es divideix en 4 components principals:
 
 ---
 
-## 4. Millora proposada per l’índex invers
+## 4. Millora proposada pel "reverse index"
 
 **Proposta:** Separar l’índex en dos:
 
