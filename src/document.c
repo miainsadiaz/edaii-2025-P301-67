@@ -276,15 +276,13 @@ DocumentNode *loadAllDocuments(const char *path) {
     char file_path[1024];
     snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
 
-    Document *doc =
-        document_desserialize(file_path); // Deserialitzem el document
+    Document *doc = document_desserialize(file_path); // Deserialitzem el document
     if (doc == NULL) {
       fprintf(stderr, "Error al deserialitzar el fitxer: %s\n", file_path);
       continue;
     }
 
-    DocumentNode *new_node = (DocumentNode *)malloc(
-        sizeof(DocumentNode)); // Node nou per a la llista
+    DocumentNode *new_node = (DocumentNode *)malloc(sizeof(DocumentNode)); // Node nou per a la llista
     if (new_node == NULL) {
       perror("Error al reservar memòria pel node");
       closedir(dir);
@@ -347,8 +345,7 @@ void select_document_and_print(DocumentNode *results) {
   }
 
   // netejar \n restant del buffer
-  while (getchar() != '\n')
-    ;
+  while (getchar() != '\n');
 
   int index = 0;
   DocumentNode *current = results;
