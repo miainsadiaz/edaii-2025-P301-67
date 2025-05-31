@@ -65,7 +65,7 @@ int main() {
   }
 
   /*
-  // HASHMAP
+  // HASHMAP  --> per utilitzar, decomentar les línies de sota i comentar les de la query (inclosa la línia 91)
   HashMap reverse_map;
   init_hashmap(&reverse_map);
 
