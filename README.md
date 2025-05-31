@@ -5,11 +5,11 @@
 
 # Authors
 
-Group number: (todo, add the group number here)
+Group number: 67
 
-- (todo, add the email of the first group member)
-- (todo, add the email of the second group member)
-- (todo, add the email of the third group member)
+- paola.gonzalez02@estudiant.upd.edu
+- mia.insa01@estudiant.upf.edu
+- anna.vilacis01@estudiant.upf.edu
 
 # Plagiarism Disclaimer
 - You **MUST NOT** look at anyone else's solutions, including previous year students and external tutors.
