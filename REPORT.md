@@ -33,6 +33,8 @@ El sistema es divideix en 4 components principals:
 
 3. Parsing a document into the struct:     O(n+m)    ya que parsear un dpcumento es O(n) donde n es el número de caracteres que hay en el documento. m es el numero de links encontrados por cada busqueda. Entonces cada vez que se añade un link a la linked list, la complejidad es de O(1), así que oara añadir todos los links, la complejidad es de O(m).Así es que en total la complejidad es la suma de las dos .        |
 
+4. Parsing a query intro the struct: Como para hacer esto se han de leer todos los carácteres de la búqeda introducida por el usuario y después almacenarlos en la struct, entenderemos n como el número de estos carácteres y tendrá una complejidad lineal: O(n)
+
 ---
 
 ## 3. Gràfics i Discussió
