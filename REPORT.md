@@ -24,7 +24,14 @@ El sistema es divideix en 4 components principals:
 | Comptar quants apunten a un sol document (`get_indegree`)                 | O(n·l)         | Cal revisar tots els enllaços de tots els documents                          |
 | Buscar documents per una paraula (amb índex invers)                        | O(1)           | Accés directe en el `HashMap` per clau                                       |
 | Buscar documents que compleixen TOTES les paraules d’una consulta         | O(k·d)         | Per cada paraula (k), es recorre una llista de d documents                   |
-| Ordenar els documents per rellevància (`ordenar_per_relevancia`)          | O(n²)          | Es fa Bubble Sort sobre n documents                                          |
+| Ordenar els documents per rellevància (`ordenar_per_relevancia`)          | O(n²)          | Es fa Bubble Sort sobre n documents         
+
+
+
+
+
+
+3. Parsing a document into the struct:     O(n+m)    ya que parsear un dpcumento es O(n) donde n es el número de caracteres que hay en el documento. m es el numero de links encontrados por cada busqueda. Entonces cada vez que se añade un link a la linked list, la complejidad es de O(1), así que oara añadir todos los links, la complejidad es de O(m).Así es que en total la complejidad es la suma de las dos .        |
 
 ---
 
