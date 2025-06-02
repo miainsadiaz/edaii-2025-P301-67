@@ -36,6 +36,13 @@ El sistema es divideix en 4 components principals:
 4. Parsing a query intro the struct: Como para hacer esto se han de leer todos los carácteres de la búqeda introducida por el usuario y después almacenarlos en la struct, entenderemos n como el número de estos carácteres y tendrá una complejidad lineal: O(n)
 
 5. analysis of counting the neighbours in the graph: Para contar los vecinos de un nodo en un grafo se han de recorrest todos sus vértices adyacentes. Así que siendo n los vecinos del nodo, su complejidad es lineal O(n)
+
+
+6. Runtime complexity analysis of counting the neighbours of a document in the graph: Para cada documento contamos cuantos links tiene asociados. Así que miraremos los links de la linked list asociada al Document. Tendrá una complejidad lineal O(n) donde n es el numero de links asociados al Document.
+
+7. Runtime complexity analysis of finding the documents that contain a keyword in the reverse-index: 
+
+
 ---
 
 ## 3. Gràfics i Discussió
