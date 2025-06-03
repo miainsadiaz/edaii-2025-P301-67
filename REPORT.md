@@ -35,7 +35,7 @@ El sistema es divideix en 4 components principals:
 
 ![Temps de cerca amb o sense índex invers](image-3.png)
 
-> Amb índex invers la cerca és gairebé immediata. Sense índex, el temps creix més o meny de manera lineal, menys en un punt, ja que 
+> Amb índex invers la cerca és gairebé immediata. Sense índex, el temps creix més o meny de manera lineal, menys en un punt, ja que en el dataset de 540 s'han trobat més cerques de la paraula introduïda que en el de 270. 
 
 ---
 
