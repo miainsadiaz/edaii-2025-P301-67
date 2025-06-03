@@ -19,14 +19,18 @@ El sistema es divideix en 4 components principals:
 | Descripció                                                                 | Big-O          | Justificació                                                                 |
 |----------------------------------------------------------------------------|----------------|------------------------------------------------------------------------------|
 | Parsing d’un document (amb links)                                          | O(n)           | Recorre cada caràcter del fitxer una sola vegada per llegir-lo i analitzar-lo |
+
 | Parsing d’una consulta (query)                                             | O(k)           | Divideix la consulta en k paraules mitjançant `strtok()`                     |
-| Comptar nodes adjacents (links) de TOTS els documents del graf                       | O(n·l)         | Cada document pot tenir l enllaços → es fa doble bucle                        |
-| Comptar quants apunten a un sol document (`get_indegree`)                 | O(n·l)         | Cal revisar tots els enllaços de tots els documents                          |
+
+| Comptar nodes adjacents/veins (links) de TOTS els documents del graf       | O(n·l)         | Cada document pot tenir l enllaços → es fa doble bucle                        |
+
+| Comptar quants apunten a un sol document (`get_indegree`)                  | O(n·l)         | Cal revisar tots els enllaços de tots els documents                          |
+
 | Buscar documents per una paraula (amb índex invers)                        | O(1)           | Accés directe en el `HashMap` per clau                                       |
-| Buscar documents que compleixen TOTES les paraules d’una consulta         | O(k·d)         | Per cada paraula (k), es recorre una llista de d documents                   |
-| Ordenar els documents per rellevància (`ordenar_per_relevancia`)          | O(n²)          | Es fa Bubble Sort sobre n documents         
 
+| Buscar documents que compleixen TOTES les paraules d’una consulta          | O(k·d)         | Per cada paraula (k), es recorre una llista de d documents                   |
 
+| Ordenar els documents per rellevància (`ordenar_per_relevancia`)           | O(n²)          | Es fa Bubble Sort sobre n documents         
 
 
 
@@ -46,7 +50,7 @@ El sistema es divideix en 4 components principals:
 8. Runtime complexity analysis of finding the documents that match all keywords in the query: para hacer esto se ha de obtener la lista de los documentos que contienen esas palabras, y después saber que documentos estan las listas a la vez. Es decir, los documentos que contienen todas las palabras consultadas por el usuario. Y para saberlo hace falta comparar los documentos. La complejidad es O(t*m) dobde t es el numero de keyworkds de la consulta del usuario y m es el tamaño medio de las listas de codumentos por palabra.
 
 
-9.Runtime complexity analysis of sorting the documents according to the relevance score
+9. Runtime complexity analysis of sorting the documents according to the relevance score
 Qualificació màxima: para ordenarlos según su relevancia usamos el algoritmo qsrot que tiene una complejidad de O(n logn)
 
 
