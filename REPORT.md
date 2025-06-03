@@ -4,10 +4,10 @@
 
 El sistema es divideix en 4 components principals:
 
-- **Parser de documents**: llegeix fitxers `.txt` i crea structs en memòria (`Document`, `Link`).
-- **Índex invers (reverse index)**: un `HashMap` que associa paraules a llistes de documents.
-- **Graf de documents**: un graf dirigit on els nodes són documents i les arestes són enllaços.
-- **Motor de cerca (Search Engine)**: processa consultes, filtra documents i els ordena per rellevància.
+- **Parser de documents**: llegeix fitxers `.txt` i crea structs en memòria (`Document`, `Link`). 🟩 🟦 
+- **Índex invers (reverse index)**: un `HashMap` que associa paraules a llistes de documents.🟦
+- **Graf de documents**: un graf dirigit on els nodes són documents i les arestes són enllaços.🟦
+- **Motor de cerca (Search Engine)**: processa consultes, filtra documents i els ordena per rellevància.🟦
 
 🟦 = en memòria (RAM), 🟩 = a disc
 
