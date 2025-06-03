@@ -60,9 +60,9 @@ Qualificació màxima: para ordenarlos según su relevancia usamos el algoritmo 
 
 ### 3.1 Temps de cerca amb / sense "reverse index"
 
-![Temps de cerca amb o sense índex invers](image-2.png)
+![Temps de cerca amb o sense índex invers](image-3.png)
 
-> Amb índex invers la cerca és gairebé immediata. Sense índex, el temps creix linealment amb el nombre de documents.
+> Amb índex invers la cerca és gairebé immediata. Sense índex, el temps creix més o meny de manera lineal, menys en un punt, ja que 
 
 ---
 
