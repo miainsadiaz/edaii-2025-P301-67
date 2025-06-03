@@ -60,7 +60,7 @@ Qualificació màxima: para ordenarlos según su relevancia usamos el algoritmo 
 
 ### 3.1 Temps de cerca amb / sense "reverse index"
 
-![alt text](image-2.png)
+![Temps de cerca amb o sense índex invers](image-2.png)
 
 > Amb índex invers la cerca és gairebé immediata. Sense índex, el temps creix linealment amb el nombre de documents.
 
@@ -68,14 +68,14 @@ Qualificació màxima: para ordenarlos según su relevancia usamos el algoritmo 
 
 ### 3.2 Temps d’inicialització amb diferents mides de `HashMap`
 
-![alt text](image-1.png)
+![Temps d’inicialització amb diferents mides de HashMap](image-1.png)
 > L’inicialització és lleugerament més ràpida amb mides de taula més grans perquè es redueixen col·lisions.
 
 ---
 
 ### 3.3 Temps de cerca amb diferents mides de `HashMap`
 
-![alt text](image.png)
+![Temps de cerca amb diferents mides de HashMap](image.png)
 
 > La cerca millora lleugerament amb mides més grans del `HashMap` gràcies a una menor profunditat a la llista de col·lisions.
 
