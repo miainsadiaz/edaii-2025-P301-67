@@ -18,19 +18,14 @@ El sistema es divideix en 4 components principals:
 
 | Descripció                                                                 | Big-O          | Justificació                                                                 |
 |----------------------------------------------------------------------------|----------------|------------------------------------------------------------------------------|
-| Parsing d’un document (amb links)                                          | O(n)           | Recorre cada caràcter del fitxer una sola vegada per llegir-lo i analitzar-lo |
+| Parsing d’un document (amb links)                                          | O(n)           | Recorre cada caràcter del fitxer una sola vegada per llegir-lo i analitzar-lo. |
+| Parsing d’una consulta (query)                                             | O(k)           | Divideix la consulta en k paraules mitjançant `strtok()`.                   |
+| Comptar nodes adjacents/veïns (links) de TOTS els documents del graf       | O(n·l)         | Cada document pot tenir l enllaços; es fa un doble bucle per comptar-los.   |
+| Comptar quants apunten a un sol document (`get_indegree`)                  | O(n·l)         | Cal revisar tots els enllaços de tots els documents.                        |
+| Buscar documents per una paraula (amb índex invers)                        | O(1)           | Accés directe en el `HashMap` per clau.                                     |
+| Buscar documents que compleixen TOTES les paraules d’una consulta          | O(k·d)         | Per cada paraula (k), es recorre una llista de d documents.                 |
+| Ordenar els documents per rellevància (`ordenar_per_relevancia`)          | O(n²)          | Es fa Bubble Sort sobre n documents.                                        |
 
-| Parsing d’una consulta (query)                                             | O(k)           | Divideix la consulta en k paraules mitjançant `strtok()`                     |
-
-| Comptar nodes adjacents/veins (links) de TOTS els documents del graf       | O(n·l)         | Cada document pot tenir l enllaços → es fa doble bucle                        |
-
-| Comptar quants apunten a un sol document (`get_indegree`)                  | O(n·l)         | Cal revisar tots els enllaços de tots els documents                          |
-
-| Buscar documents per una paraula (amb índex invers)                        | O(1)           | Accés directe en el `HashMap` per clau                                       |
-
-| Buscar documents que compleixen TOTES les paraules d’una consulta          | O(k·d)         | Per cada paraula (k), es recorre una llista de d documents                   |
-
-| Ordenar els documents per rellevància (`ordenar_per_relevancia`)           | O(n²)          | Es fa Bubble Sort sobre n documents         
 
 
 
