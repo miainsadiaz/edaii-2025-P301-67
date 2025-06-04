@@ -1,5 +1,7 @@
 # Report: Building a search engine like Google
 
+Paola Gonzalez, Mia Insa i Anna Vilacís
+
 ## 1. C4 Component Diagram
 
 El sistema es divideix en 4 components principals:
@@ -11,8 +13,6 @@ El sistema es divideix en 4 components principals:
 
 🟦 = en memòria (RAM), 🟩 = a disc
 
-
----
 
 ## 2. Anàlisi de Complexitat
 
@@ -27,51 +27,47 @@ El sistema es divideix en 4 components principals:
 | Ordenar els documents per rellevància (`ordenar_per_relevancia`)          | O(n²)          | Es fa Bubble Sort sobre n documents.                                        |
 
 
----
 
 ## 3. Gràfics i Discussió
 
 ### 3.1 Temps de cerca amb / sense "reverse index"
 
-![Temps de cerca amb/sense índex invers](image-3.png)
+![Temps de cerca amb/sense índex invers](image-4.png)
 
 > Amb índex invers la cerca és gairebé immediata. Sense índex invers, el temps creix més o meny de manera lineal, menys en un punt, ja que en el dataset de 540 s'han trobat més cerques de la paraula introduïda que en el de 270. 
 
----
 
 ### 3.2 Temps d’inicialització amb diferents mides de `HashMap`
 
-![Temps d’inicialització amb diferents mides de HashMap](image-1.png)
+![Temps d’inicialització amb diferents mides de HashMap](image-5.png)
 > L’inicialització és lleugerament més ràpida amb mides de taula més grans perquè es redueixen col·lisions.
 
----
 
 ### 3.3 Temps de cerca amb diferents mides de `HashMap`
 
-![Temps de cerca amb diferents mides de HashMap](image.png)
+![Temps de cerca amb diferents mides de HashMap](image-6.png)
 
 > La cerca millora lleugerament amb mides més grans del `HashMap` gràcies a una menor profunditat a la llista de col·lisions.
 
----
 
-## 4. Millora proposada pel "reverse index"
+## 4. Millora proposada per l’índex invers
 
-**Proposta:** Separar l’índex en dos:
+**Proposta:**  
+Dividir l’índex invers en dos subíndexs diferenciats:  
+- **Short Index**: conté només les paraules del títol de cada document.  
+- **Full Index**: conté totes les paraules del document (incloent-hi el títol i el cos).  
 
-- *Short index*: només per les paraules dels títols
-- *Full index*: per les paraules del cos del document
+Aquesta divisió permet:  
+Prioritzar els documents més rellevants (els que tenen la paraula clau al títol).  
+Reduir el temps de cerca, ja que es pot consultar primer el *Short Index* i després completar amb el *Full Index*.  
+Millorar la qualitat del rànquing de resultats, donant més pes als títols.
 
-**Avantatges:**
-- Prioritza documents més rellevants (el títol pesa més)
-- Millora la qualitat de la cerca
 
-**Impacte:**
+**Impacte esperat:**  
 
-| Factor                 | Canvi             |
-|------------------------|------------------|
-| Memòria                | Lleuger augment     |
-| Temps d’inicialització | Igual o lleugerament més alt |
-| Complexitat            | O(n·l) (mateixa)  |
-
----
+| Factor                     | Canvi esperat                                                        |
+|----------------------------|----------------------------------------------------------------------|
+| **Ús de memòria**          | Lleuger augment: hi ha dues estructures en lloc d’una sola.          |
+| **Temps d’inicialització** | Pot ser una mica més alt, ja que es construeixen dos índexs.         |
+| **Complexitat**            | Manté O(n·l) (on n = documents, l = paraules per document). La càrrega afegida és constant i insignificant. |
 
