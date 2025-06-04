@@ -5,7 +5,7 @@ Paola Gonzalez, Mia Insa i Anna Vilacís
 ## 1. C4 Component Diagram
 
 El sistema es divideix en 4 components principals:
-
+![alt text](<Captura de pantalla 2025-06-04 a las 11.58.47.png>)
 - **Parser de documents**: llegeix fitxers `.txt` i crea structs en memòria (`Document`, `Link`). 🟩 🟦 
 - **Índex invers (reverse index)**: un `HashMap` que associa paraules a llistes de documents.🟦
 - **Graf de documents**: un graf dirigit on els nodes són documents i les arestes són enllaços.🟦
