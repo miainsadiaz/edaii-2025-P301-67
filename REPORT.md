@@ -45,7 +45,7 @@ El sistema es divideix en 4 components principals:
 
 ### 3.3 Temps de cerca amb diferents mides de `HashMap`
 
-![Temps de cerca amb diferents mides de HashMap](image-6.png)
+![Temps de cerca amb diferents mides de HashMap](image.png)
 
 > La cerca millora lleugerament amb mides més grans del `HashMap` gràcies a una menor profunditat a la llista de col·lisions.
 
